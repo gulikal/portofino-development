@@ -125,12 +125,14 @@
   function renderContact(lang) {
     var c = SITE.contact;
     var tel = "tel:" + c.phone.replace(/[^\d+]/g, "");
-    var p = document.getElementById("c-phone");
-    p.href = tel;
-    p.querySelector(".v").textContent = c.phone;
-    var e = document.getElementById("c-email");
-    e.href = "mailto:" + c.email;
-    e.querySelector(".v").textContent = c.email;
+    ["c-phone", "m-phone"].forEach(function (id) {
+      var p = document.getElementById(id);
+      if (p) { p.href = tel; p.textContent = c.phone; }
+    });
+    ["c-email", "m-email"].forEach(function (id) {
+      var e = document.getElementById(id);
+      if (e) { e.href = "mailto:" + c.email; e.textContent = c.email; }
+    });
     document.getElementById("c-address").querySelector(".v").textContent = c.address[lang];
 
     var fc = document.getElementById("footer-contact");
@@ -188,6 +190,7 @@
     renderCompanies(lang, t);
     renderContact(lang);
     applyImages();
+    document.dispatchEvent(new CustomEvent("pd:lang", { detail: lang }));
     try { window.localStorage.setItem("pd-lang", lang); } catch (e) { /* ignore */ }
   }
 
