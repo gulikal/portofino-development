@@ -56,7 +56,7 @@
 
       var cm = el("div", "card-media");
       var media = el("div", "media");
-      if (c.image) media.style.setProperty("--img", "url('" + c.image + "')");
+      if (c.image) { media.setAttribute("data-img", c.image); cm.classList.add("has-img"); }
       cm.appendChild(media);
       cm.appendChild(el("span", "gold-badge card-tag", c.tag[lang]));
 
@@ -142,6 +142,14 @@
     });
   }
 
+  // Şəkillər: data-img atributundan fon şəkli kimi yüklənir (fayl yoxdursa, brend fonu qalır)
+  function applyImages() {
+    document.querySelectorAll("[data-img]").forEach(function (n) {
+      var src = new URL(n.getAttribute("data-img"), document.baseURI).href;
+      n.style.backgroundImage = "url('" + src + "'), linear-gradient(160deg, #2E6E65 0%, #0F4F47 45%, #08372F 100%)";
+    });
+  }
+
   function setLang(lang) {
     var t = SITE.i18n[lang];
     document.documentElement.lang = lang;
@@ -160,6 +168,7 @@
     renderStats(lang);
     renderCompanies(lang, t);
     renderContact(lang);
+    applyImages();
     try { window.localStorage.setItem("pd-lang", lang); } catch (e) { /* ignore */ }
   }
 

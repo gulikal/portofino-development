@@ -177,6 +177,16 @@ em { font-style: italic; }
 .scroll-cue { position: absolute; z-index: 2; left: 50%; bottom: 36px; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 14px; color: rgba(255, 255, 255, 0.5); font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; }
 .scroll-cue::after { content: ""; width: 1px; height: 48px; background: linear-gradient(180deg, rgba(255, 255, 255, 0.6), transparent); }
 
+.render-note { position: absolute; z-index: 2; right: max(24px, env(safe-area-inset-right, 0px)); bottom: 24px; font-size: 10.5px; letter-spacing: 0.08em; color: rgba(255, 255, 255, 0.55); }
+
+.hero::after { content: ""; position: absolute; inset: 0; z-index: 1; background: radial-gradient(ellipse 55% 45% at 50% 48%, rgba(6, 44, 39, 0.55), transparent 75%); }
+.hero h1, .hero-lead { text-shadow: 0 2px 30px rgba(0, 0, 0, 0.35); }
+.card-media.has-img .card-logo { display: none; }
+
+/* Geniş şəkil zolağı */
+.band { position: relative; aspect-ratio: 21 / 9; max-height: 640px; width: 100%; }
+.band .render-note { color: rgba(255, 255, 255, 0.7); }
+
 /* ---------- About ---------- */
 .about .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(40px, 7vw, 96px); align-items: center; }
 .about h2 { font-size: clamp(36px, 4.6vw, 58px); line-height: 1.18; margin-bottom: 32px; }
