@@ -522,45 +522,35 @@ body.menu-open .site-header { background: transparent; box-shadow: none; color: 
 }
 
 
-/* ---------- Scroll ilə yüksələn bina ---------- */
-.rise { position: relative; height: 280vh; background: #062C27; color: #fff; }
-.rise-sticky { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; background: radial-gradient(ellipse 70% 60% at 70% 60%, #0F5249 0%, #062C27 70%); }
-.rise-grid { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(226, 183, 118, 0.07) 0 1px, transparent 1px 64px); mask-image: linear-gradient(90deg, transparent, #000 30%, #000 70%, transparent); -webkit-mask-image: linear-gradient(90deg, transparent, #000 30%, #000 70%, transparent); }
-.rise-inner { position: relative; height: 100%; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 40px; align-items: center; }
-.rise-copy { position: relative; z-index: 2; }
-.rise .eyebrow { color: rgba(255, 255, 255, 0.5); }
-.rise h2 { color: #fff; font-size: clamp(38px, 4.8vw, 64px); line-height: 1.1; }
-.rise h2 em { display: block; color: var(--gold); }
-.rise-text { margin-top: 22px; color: rgba(255, 255, 255, 0.68); font-weight: 300; max-width: 30em; }
-.rise-steps { list-style: none; margin: 36px 0 0; padding: 0; display: grid; gap: 4px; }
-.rise-steps li { display: flex; align-items: baseline; gap: 16px; padding: 10px 0; font: 400 22px var(--serif); color: rgba(255, 255, 255, 0.3); transition: color 0.5s ease, transform 0.5s ease; }
-.rise-steps li i { font: 500 11px var(--sans); letter-spacing: 0.2em; font-style: normal; }
-.rise-steps li.is-on { color: #fff; transform: translateX(8px); }
+/* ---------- Scroll ilə yüksələn bina ----------
+   Yalnız transform və opacity animasiya olunur (GPU), ona görə axıcıdır. */
+.rise { position: relative; height: 260vh; background: #062C27; color: #fff; }
+.rise-sticky { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; display: flex; flex-direction: column; background: radial-gradient(ellipse 60% 55% at 50% 100%, #145A50 0%, #062C27 70%); }
+.rise-grid { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(226, 183, 118, 0.06) 0 1px, transparent 1px 56px); -webkit-mask-image: radial-gradient(ellipse 50% 70% at 50% 100%, #000, transparent); mask-image: radial-gradient(ellipse 50% 70% at 50% 100%, #000, transparent); pointer-events: none; }
+.rise-copy { position: relative; z-index: 3; text-align: center; padding-top: calc(110px + env(safe-area-inset-top, 0px)); }
+.rise .eyebrow { color: rgba(255, 255, 255, 0.5); margin-bottom: 14px; }
+.rise h2 { color: #fff; font-size: clamp(32px, 4.2vw, 56px); line-height: 1.1; }
+.rise h2 em { color: var(--gold); }
+.rise-steps { list-style: none; margin: 22px 0 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 34px; }
+.rise-steps li { display: flex; align-items: baseline; gap: 10px; font: 400 19px var(--serif); color: rgba(255, 255, 255, 0.28); transition: color 0.5s ease; }
+.rise-steps li i { font: 500 10.5px var(--sans); letter-spacing: 0.2em; font-style: normal; transition: color 0.5s ease; }
+.rise-steps li.is-on { color: #fff; }
 .rise-steps li.is-on i { color: var(--gold); }
-.rise-bar { margin-top: 18px; height: 1px; max-width: 320px; background: rgba(255, 255, 255, 0.15); }
-.rise-bar span { display: block; height: 100%; background: var(--gold-grad); transform: scaleX(0); transform-origin: 0 50%; }
-.rise-stage { position: relative; height: 100%; display: flex; align-items: flex-end; justify-content: center; }
-.rise-building { position: relative; width: min(100%, 640px); margin-bottom: 0; will-change: transform, clip-path, opacity; }
-.rise-building img { display: block; width: 100%; height: auto; max-height: 92vh; object-fit: contain; object-position: bottom; filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.35)); }
-.rise-edge { position: absolute; left: 6%; right: 6%; height: 2px; top: var(--edge, 100%); background: linear-gradient(90deg, transparent, #F6DDA8, transparent); box-shadow: 0 0 18px 2px rgba(226, 183, 118, 0.6); opacity: var(--edge-o, 0); }
-.rise-ground { position: absolute; left: -10%; right: -10%; bottom: 0; height: 18%; background: linear-gradient(180deg, transparent, #062C27 85%); pointer-events: none; }
-.rise .render-note { bottom: 20px; }
-
-@media (max-width: 900px) {
-  .rise { height: 240vh; }
-  .rise-inner { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 1fr; gap: 0; padding-block: calc(96px + env(safe-area-inset-top, 0px)) 0; }
-  .rise h2 { font-size: clamp(32px, 8vw, 44px); }
-  .rise-text { display: none; }
-  .rise-steps { margin-top: 18px; grid-auto-flow: column; justify-content: start; gap: 18px; }
-  .rise-steps li { font-size: 16px; padding: 4px 0; gap: 8px; }
-  .rise-steps li.is-on { transform: none; }
-  .rise-bar { display: none; }
-  .rise-building { width: min(100%, 460px); }
+.rise-stage { position: relative; flex: 1; min-height: 0; display: flex; justify-content: center; align-items: flex-end; will-change: opacity, transform; }
+.rise-window { position: relative; height: 100%; aspect-ratio: 760 / 1350; max-width: 92vw; overflow: hidden; }
+.rise-window img { position: absolute; left: 0; bottom: 0; width: 100%; height: auto; transform: translate3d(0, 100%, 0); will-change: transform; }
+.rise-ground { position: absolute; left: 50%; bottom: 0; width: min(900px, 100vw); height: 2px; transform: translateX(-50%); background: linear-gradient(90deg, transparent, rgba(246, 221, 168, 0.9), transparent); box-shadow: 0 0 30px 6px rgba(226, 183, 118, 0.35); }
+.rise .render-note { bottom: 16px; }
+@media (max-width: 700px) {
+  .rise { height: 220vh; }
+  .rise-copy { padding-top: calc(96px + env(safe-area-inset-top, 0px)); }
+  .rise-steps { gap: 6px 18px; }
+  .rise-steps li { font-size: 15px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .rise { height: auto; }
-  .rise-sticky { position: relative; height: auto; padding-block: 96px 0; }
-  .rise-inner { height: auto; }
+  .rise-sticky { position: relative; height: 92vh; }
+  .rise-window img { transform: none; }
   .rise-steps li { color: #fff; }
 }
 

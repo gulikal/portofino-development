@@ -139,17 +139,7 @@
     });
     links.forEach(function (a) { a.classList.toggle("is-active", a === current); });
     if (!reduce) {
-      if (band) {
-        var r = band.getBoundingClientRect();
-        var off = (r.top + r.height / 2 - window.innerHeight / 2) * -0.12;
-        band.style.backgroundPosition = "center calc(50% + " + off.toFixed(1) + "px)";
-      }
       if (heroMedia && y < window.innerHeight) heroMedia.style.translate = "0 " + (y * 0.25).toFixed(1) + "px";
-      if (aboutMedia) {
-        var ar = aboutMedia.getBoundingClientRect();
-        aboutMedia.style.backgroundPosition = "center calc(50% + " + ((ar.top + ar.height / 2 - window.innerHeight / 2) * -0.08).toFixed(1) + "px)";
-        aboutMedia.style.backgroundSize = "auto 118%";
-      }
     }
     ticking = false;
   }
@@ -232,33 +222,40 @@
   // geri düyməsi ilə qayıdanda pərdə açıq qalmasın
   window.addEventListener("pageshow", function () { leave.classList.remove("is-on"); });
 
-  /* 9. Scroll ilə yüksələn bina */
+  /* 9. Scroll ilə yüksələn bina — yalnız transform/opacity, hər kadrda bir dəfə */
   var rise = document.getElementById("rise");
-  var building = document.getElementById("riseBuilding");
-  var riseBar = document.getElementById("riseBar");
+  var riseImg = document.getElementById("riseImg");
+  var riseStage = document.getElementById("riseStage");
   var steps = rise ? rise.querySelectorAll(".rise-steps li") : [];
-  function ease(x) { return x < 0 ? 0 : x > 1 ? 1 : 1 - Math.pow(1 - x, 3); }
+  var riseTick = false, lastIdx = -2;
+  function ease(x) { return x <= 0 ? 0 : x >= 1 ? 1 : 1 - Math.pow(1 - x, 2.4); }
   function onRise() {
-    if (!rise || !building) return;
-    if (reduce) { steps.forEach(function (s) { s.classList.add("is-on"); }); return; }
+    riseTick = false;
+    if (!rise || !riseImg) return;
     var r = rise.getBoundingClientRect();
+    if (r.bottom < 0 || r.top > window.innerHeight) return; // görünmürsə, hesablamırıq
     var total = r.height - window.innerHeight;
     var p = Math.min(1, Math.max(0, -r.top / total));
-    var g = ease(p / 0.62);                 // 0 → 62%: bina yüksəlir
-    var out = Math.min(1, Math.max(0, (p - 0.8) / 0.2)); // 80 → 100%: bina yox olur
-    var hidden = (1 - g) * 100;            // yuxarıdan nə qədər gizlidir
-    building.style.clipPath = "inset(" + hidden.toFixed(2) + "% 0 0 0)";
-    building.style.transform = "translateY(" + ((1 - g) * 14 - out * 6).toFixed(2) + "%) scale(" + (1 - out * 0.06).toFixed(3) + ")";
-    building.style.opacity = (1 - out).toFixed(3);
-    building.style.setProperty("--edge", hidden.toFixed(2) + "%");
-    building.style.setProperty("--edge-o", (g > 0.01 && g < 0.99 ? 1 : 0));
-    if (riseBar) riseBar.style.transform = "scaleX(" + Math.min(1, p / 0.8).toFixed(3) + ")";
-    var idx = p < 0.08 ? -1 : p < 0.3 ? 0 : p < 0.62 ? 1 : 2;
-    steps.forEach(function (s, i) { s.classList.toggle("is-on", i <= idx); });
+    var g = ease(p / 0.65);                                   // 0–65%: bina yerdən yüksəlir
+    var out = Math.min(1, Math.max(0, (p - 0.82) / 0.18));   // 82–100%: yox olur
+    riseImg.style.transform = "translate3d(0," + ((1 - g) * 100).toFixed(2) + "%,0)";
+    riseStage.style.opacity = (1 - out).toFixed(3);
+    riseStage.style.transform = "translate3d(0," + (-out * 40).toFixed(1) + "px,0)";
+    var idx = p < 0.05 ? -1 : p < 0.3 ? 0 : p < 0.62 ? 1 : 2;
+    if (idx !== lastIdx) {
+      lastIdx = idx;
+      steps.forEach(function (s, i) { s.classList.toggle("is-on", i <= idx); });
+    }
   }
-  window.addEventListener("scroll", function () { requestAnimationFrame(onRise); }, { passive: true });
-  window.addEventListener("resize", onRise);
-  onRise();
+  if (rise && reduce) {
+    steps.forEach(function (s) { s.classList.add("is-on"); });
+  } else if (rise) {
+    window.addEventListener("scroll", function () {
+      if (!riseTick) { riseTick = true; requestAnimationFrame(onRise); }
+    }, { passive: true });
+    window.addEventListener("resize", onRise);
+    onRise();
+  }
 
   /* 10. Dil dəyişəndə yumşaq keçid */
   document.querySelectorAll(".lang button").forEach(function (b) {
