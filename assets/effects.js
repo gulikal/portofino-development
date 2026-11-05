@@ -222,26 +222,32 @@
   // geri düyməsi ilə qayıdanda pərdə açıq qalmasın
   window.addEventListener("pageshow", function () { leave.classList.remove("is-on"); });
 
-  /* 9. Scroll ilə yüksələn bina — yalnız transform/opacity, hər kadrda bir dəfə */
+  /* 9. Scroll ilə yüksələn bina — yalnız transform/opacity, kadr başına bir hesablama */
   var rise = document.getElementById("rise");
-  var riseImg = document.getElementById("riseImg");
-  var riseStage = document.getElementById("riseStage");
+  var bld = document.getElementById("riseBuilding");
+  var mask = document.getElementById("riseMask");
+  var unmask = document.getElementById("riseUnmask");
+  var riseBar = document.getElementById("riseBar");
   var steps = rise ? rise.querySelectorAll(".rise-steps li") : [];
-  var riseTick = false, lastIdx = -2;
-  function ease(x) { return x <= 0 ? 0 : x >= 1 ? 1 : 1 - Math.pow(1 - x, 2.4); }
+  var riseTick = false, lastIdx = -2, lastBuilding = null;
+  function ease(x) { return x <= 0 ? 0 : x >= 1 ? 1 : 1 - Math.pow(1 - x, 3); }
   function onRise() {
     riseTick = false;
-    if (!rise || !riseImg) return;
     var r = rise.getBoundingClientRect();
-    if (r.bottom < 0 || r.top > window.innerHeight) return; // görünmürsə, hesablamırıq
+    if (r.bottom < 0 || r.top > window.innerHeight) return; // ekranda deyilsə, heç nə etmirik
     var total = r.height - window.innerHeight;
     var p = Math.min(1, Math.max(0, -r.top / total));
-    var g = ease(p / 0.65);                                   // 0–65%: bina yerdən yüksəlir
-    var out = Math.min(1, Math.max(0, (p - 0.82) / 0.18));   // 82–100%: yox olur
-    riseImg.style.transform = "translate3d(0," + ((1 - g) * 100).toFixed(2) + "%,0)";
-    riseStage.style.opacity = (1 - out).toFixed(3);
-    riseStage.style.transform = "translate3d(0," + (-out * 40).toFixed(1) + "px,0)";
-    var idx = p < 0.05 ? -1 : p < 0.3 ? 0 : p < 0.62 ? 1 : 2;
+    var g = ease(p / 0.62);                                  // 0–62%: bina mərtəbə-mərtəbə yüksəlir
+    var out = Math.min(1, Math.max(0, (p - 0.8) / 0.2));    // 80–100%: bina yox olur
+    var hid = (1 - g) * 100;
+    mask.style.transform = "translate3d(0," + hid.toFixed(2) + "%,0)";
+    unmask.style.transform = "translate3d(0," + (-hid).toFixed(2) + "%,0)";
+    bld.style.transform = "translate3d(0," + ((1 - g) * 14 - out * 6).toFixed(2) + "%,0) scale(" + (1 - out * 0.06).toFixed(3) + ")";
+    bld.style.opacity = (1 - out).toFixed(3);
+    if (riseBar) riseBar.style.transform = "scaleX(" + Math.min(1, p / 0.8).toFixed(3) + ")";
+    var building = g > 0.01 && g < 0.99;
+    if (building !== lastBuilding) { lastBuilding = building; rise.classList.toggle("is-building", building); }
+    var idx = p < 0.08 ? -1 : p < 0.3 ? 0 : p < 0.62 ? 1 : 2;
     if (idx !== lastIdx) {
       lastIdx = idx;
       steps.forEach(function (s, i) { s.classList.toggle("is-on", i <= idx); });
@@ -249,7 +255,7 @@
   }
   if (rise && reduce) {
     steps.forEach(function (s) { s.classList.add("is-on"); });
-  } else if (rise) {
+  } else if (rise && bld) {
     window.addEventListener("scroll", function () {
       if (!riseTick) { riseTick = true; requestAnimationFrame(onRise); }
     }, { passive: true });

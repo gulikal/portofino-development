@@ -113,20 +113,30 @@
     <section class="rise" id="rise">
       <div class="rise-sticky">
         <div class="rise-grid" aria-hidden="true"></div>
-        <div class="wrap rise-copy">
-          <p class="eyebrow" data-i18n="rise.eyebrow">Layihədən təhvilə</p>
-          <h2><span data-i18n="rise.t1">Hər mərtəbə</span> <em data-i18n="rise.t2">bir öhdəlikdir</em></h2>
-          <ol class="rise-steps">
-            <li><i>01</i><span data-i18n="rise.s1">Planlaşdırma</span></li>
-            <li><i>02</i><span data-i18n="rise.s2">Tikinti</span></li>
-            <li><i>03</i><span data-i18n="rise.s3">Təhvil</span></li>
-          </ol>
-        </div>
-        <div class="rise-stage" id="riseStage" aria-hidden="true">
-          <div class="rise-window">
-            <img id="riseImg" src="assets/img/tower.webp" alt="" width="760" height="1350" decoding="async">
+        <div class="wrap rise-inner">
+          <div class="rise-copy">
+            <p class="eyebrow" data-i18n="rise.eyebrow">Layihədən təhvilə</p>
+            <h2><span data-i18n="rise.t1">Hər mərtəbə</span> <em data-i18n="rise.t2">bir öhdəlikdir</em></h2>
+            <p class="rise-text" data-i18n="rise.text"></p>
+            <ol class="rise-steps">
+              <li><i>01</i><span data-i18n="rise.s1">Planlaşdırma</span></li>
+              <li><i>02</i><span data-i18n="rise.s2">Tikinti</span></li>
+              <li><i>03</i><span data-i18n="rise.s3">Təhvil</span></li>
+            </ol>
+            <div class="rise-bar" aria-hidden="true"><span id="riseBar"></span></div>
           </div>
-          <span class="rise-ground"></span>
+          <div class="rise-stage" aria-hidden="true">
+            <!-- Maska: xarici qat aşağı, daxili qat yuxarı sürüşür, bina mərtəbə-mərtəbə görünür (yalnız transform) -->
+            <div class="rise-building" id="riseBuilding">
+              <div class="rise-mask" id="riseMask">
+                <div class="rise-unmask" id="riseUnmask">
+                  <img src="assets/img/tower.webp" alt="" width="1000" height="1347" decoding="async">
+                </div>
+                <span class="rise-edge"></span>
+              </div>
+            </div>
+            <span class="rise-ground"></span>
+          </div>
         </div>
         <span class="render-note" data-i18n="hero.note">Vizual illustrativdir</span>
       </div>
