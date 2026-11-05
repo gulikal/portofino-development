@@ -1,9 +1,10 @@
 /* Portofino Development — interaktiv effektlər
-   Hamısı "hərəkəti azalt" (prefers-reduced-motion) parametrinə hörmət edir. */
+   Effektlər bütün kompüterlərdə işləyir; "hərəkəti azalt" seçilibsə yalnız hero paralaksı dayanır. */
 (function () {
   "use strict";
   var root = document.documentElement;
-  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var reduceStrong = window.matchMedia("(prefers-reduced-motion: reduce)").matches; // yalnız hero paralaksı üçün
+  var reduce = false;
   var finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
   var lang = root.lang || "az";
   function t(key) {
@@ -140,7 +141,7 @@
     });
     links.forEach(function (a) { a.classList.toggle("is-active", a === current); });
     if (!reduce) {
-      if (heroMedia && y < window.innerHeight) heroMedia.style.translate = "0 " + (y * 0.25).toFixed(1) + "px";
+      if (!reduceStrong && heroMedia && y < window.innerHeight) heroMedia.style.translate = "0 " + (y * 0.25).toFixed(1) + "px";
     }
     ticking = false;
   }
