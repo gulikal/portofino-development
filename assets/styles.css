@@ -540,7 +540,7 @@ body.menu-open .site-header { background: transparent; box-shadow: none; color: 
 .rise-window { position: relative; height: 100%; aspect-ratio: 760 / 1350; max-width: 92vw; overflow: hidden; }
 .rise-window img { position: absolute; left: 0; bottom: 0; width: 100%; height: auto; transform: translate3d(0, 100%, 0); will-change: transform; }
 .rise-ground { position: absolute; left: 50%; bottom: 0; width: min(900px, 100vw); height: 2px; transform: translateX(-50%); background: linear-gradient(90deg, transparent, rgba(246, 221, 168, 0.9), transparent); box-shadow: 0 0 30px 6px rgba(226, 183, 118, 0.35); }
-.rise .render-note { bottom: 16px; }
+.rise .render-note { bottom: 16px; right: auto; left: max(24px, env(safe-area-inset-left, 0px)); }
 @media (max-width: 700px) {
   .rise { height: 220vh; }
   .rise-copy { padding-top: calc(96px + env(safe-area-inset-top, 0px)); }
