@@ -234,12 +234,80 @@ a.card:hover .card-media .media { transform: scale(1.05); }
 .card-info p { color: var(--soft); font-size: 14.5px; font-weight: 300; flex: 1; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
 .card-info .btn-line { align-self: flex-start; }
 
-.card.is-soon .card-media { box-shadow: none; border: 1px dashed rgba(10, 67, 60, 0.3); background: var(--sand); }
-.card.is-soon .card-media::after, .card.is-soon .media { display: none; }
-.card.is-soon .card-logo .logo-text { color: var(--green); opacity: 0.5; font-size: 20px; }
-.card.is-soon .card-cap { color: var(--green); }
-.card.is-soon .card-cap h3 { color: var(--green); }
-.card.is-soon .btn-line { border-style: dashed; border-color: var(--soft); color: var(--soft); pointer-events: none; }
+/* Level və digər loqolar şəkil üzərində */
+.cap-logo { display: block; height: 30px; width: auto; max-width: 70%; margin-bottom: 14px; }
+
+/* "Tezliklə" kartı */
+.card.is-soon .card-media { background: #062C27; box-shadow: 0 24px 50px rgba(6, 44, 39, 0.35); isolation: isolate; }
+.card.is-soon .card-media::before {
+  /* fırlanan qızılı çərçivə */
+  content: "";
+  position: absolute;
+  inset: -50%;
+  z-index: 0;
+  background: conic-gradient(from 0deg, transparent 0 62%, rgba(226, 183, 118, 0.0) 64%, #E2B776 72%, #F6DDA8 76%, rgba(226, 183, 118, 0) 84%, transparent 100%);
+  animation: soon-spin 6s linear infinite;
+}
+.card.is-soon .media { inset: 2px; z-index: 1; filter: saturate(0.6) brightness(0.55); transform: scale(1.08); transition: transform 1.2s ease; }
+.card.is-soon:hover .media { transform: scale(1.14); }
+.card.is-soon .card-media::after { z-index: 2; inset: 2px; background: radial-gradient(ellipse 80% 60% at 50% 45%, rgba(6, 44, 39, 0.25), rgba(6, 44, 39, 0.92) 100%); }
+.soon-glow {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  top: 42%;
+  width: 70%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(226, 183, 118, 0.38) 0%, rgba(226, 183, 118, 0) 65%);
+  animation: soon-breathe 4s ease-in-out infinite;
+  pointer-events: none;
+}
+.soon-center {
+  position: absolute;
+  z-index: 4;
+  inset: 0 0 18%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+  padding: 24px;
+}
+.soon-hex { width: 76px; height: 76px; margin-bottom: 22px; }
+.soon-hex path { fill: none; stroke: var(--gold); stroke-width: 1.5; stroke-dasharray: 280; stroke-dashoffset: 280; animation: soon-draw 3.2s ease-in-out infinite alternate; }
+.soon-kicker { font: 500 10.5px var(--sans); letter-spacing: 0.4em; text-transform: uppercase; color: rgba(255, 255, 255, 0.7); }
+.soon-title {
+  display: block;
+  margin-top: 10px;
+  font: italic 400 clamp(38px, 4vw, 50px)/1.05 var(--serif);
+  background: linear-gradient(100deg, #C99B55 0%, #F6DDA8 40%, #FFF4DC 50%, #F6DDA8 60%, #C99B55 100%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: soon-shine 4.5s ease-in-out infinite;
+}
+.soon-line { display: flex; align-items: center; gap: 12px; margin-top: 16px; font: 500 11px var(--sans); letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); }
+.soon-line::before, .soon-line::after { content: ""; width: 26px; height: 1px; background: currentColor; opacity: 0.7; }
+.card.is-soon .card-tag, .card.is-soon .card-cap { z-index: 5; }
+.card.is-soon .card-cap { display: none; }
+.soon-center { inset: 0; }
+.card.is-soon .btn-line { border-color: var(--gold); color: #8C6A30; pointer-events: none; position: relative; padding-left: 38px; }
+.card.is-soon .btn-line::before { content: ""; position: absolute; left: 18px; top: 50%; width: 8px; height: 8px; margin-top: -4px; border-radius: 50%; background: var(--gold); animation: soon-pulse 1.6s ease-in-out infinite; }
+
+@keyframes soon-spin { to { transform: rotate(360deg); } }
+@keyframes soon-breathe { 0%, 100% { opacity: 0.55; transform: translate(-50%, -50%) scale(0.9); } 50% { opacity: 1; transform: translate(-50%, -50%) scale(1.08); } }
+@keyframes soon-shine { 0% { background-position: 100% 0; } 60%, 100% { background-position: 0% 0; } }
+@keyframes soon-draw { to { stroke-dashoffset: 0; } }
+@keyframes soon-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(226, 183, 118, 0.6); } 50% { box-shadow: 0 0 0 7px rgba(226, 183, 118, 0); } }
+@media (prefers-reduced-motion: reduce) {
+  .card.is-soon .card-media::before, .soon-glow, .soon-title, .soon-hex path, .card.is-soon .btn-line::before { animation: none; }
+  .soon-hex path { stroke-dashoffset: 0; }
+  .card.is-soon:hover .media { transform: scale(1.08); }
+}
 
 /* ---------- Values (tünd) ---------- */
 .values { background: var(--green); color: #fff; }

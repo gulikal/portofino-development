@@ -76,7 +76,26 @@
       }
       cm.appendChild(logo);
 
+      if (!active) {
+        // "Tezliklə" kartı: bulanıq ön baxış, qızılı işıq, böyük kursiv başlıq
+        cm.classList.add("soon-media");
+        var glow = el("div", "soon-glow");
+        cm.appendChild(glow);
+        var soon = el("div", "soon-center");
+        soon.innerHTML = '<svg class="soon-hex" viewBox="0 0 100 100" aria-hidden="true"><path d="M27 6h46l23 44-23 44H27L4 50 27 6Z"/></svg>';
+        soon.appendChild(el("span", "soon-kicker", t["soon.kicker"]));
+        soon.appendChild(el("strong", "soon-title", t["card.soon"]));
+        soon.appendChild(el("span", "soon-line", t["soon.line"]));
+        cm.appendChild(soon);
+      }
+
       var cap = el("div", "card-cap");
+      if (c.logo && c.image) {
+        var capLogo = el("img", "cap-logo");
+        capLogo.src = c.logo;
+        capLogo.alt = c.name[lang];
+        cap.appendChild(capLogo);
+      }
       if (c.place && c.place[lang]) {
         var pl = el("span", "place");
         pl.innerHTML = PIN;
