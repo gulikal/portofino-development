@@ -27,6 +27,7 @@
 }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
@@ -492,6 +493,7 @@ a.card:hover .card-info .btn-line::after { transform: translateX(4px); }
 .burger[aria-expanded="true"] span:nth-child(1) { top: 21px; transform: rotate(45deg); }
 .burger[aria-expanded="true"] span:nth-child(2) { top: 21px; transform: rotate(-45deg); }
 .mmenu { position: fixed; inset: 0; z-index: 45; background: var(--green); color: #fff; display: flex; align-items: center; padding-top: calc(90px + env(safe-area-inset-top, 0px)); opacity: 0; transition: opacity 0.4s ease; }
+.mmenu:not(.is-open) { pointer-events: none; }
 .mmenu.is-open { opacity: 1; }
 .mmenu ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
 .mmenu li a { display: flex; align-items: baseline; gap: 18px; padding: 12px 0; text-decoration: none; font: 400 clamp(34px, 9vw, 48px)/1.1 var(--serif); border-bottom: 1px solid var(--line-light); opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease, color 0.3s; }
