@@ -16,147 +16,150 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..700&family=Inter:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap">
   <link rel="stylesheet" href="assets/styles.css">
 
   <!-- ANALİTİKA: Google Analytics / Meta Pixel kodunu bura əlavə edin -->
 </head>
 <body>
 
-  <header class="site-header">
+  <header class="site-header" id="header">
     <div class="wrap">
       <a class="wordmark" href="#top" aria-label="Portofino Development">
-        <!-- Rəsmi loqo gələndə bu bloku <img src="assets/logos/portofino-development.svg" alt="Portofino Development" height="36"> ilə əvəz edin -->
-        <svg class="hex" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 2h11L23 12l-5.5 10h-11L1 12 6.5 2Zm1.2 2L3.3 12l4.4 8h8.6l4.4-8-4.4-8H7.7Z"/></svg>
-        <span class="wordmark-name"><b>PORTOFINO</b><small>DEVELOPMENT</small></span>
+        <!-- Rəsmi loqo gələndə bu bloku <img src="assets/logos/portofino-development.svg" alt="Portofino Development" height="40"> ilə əvəz edin -->
+        <b>PORTOFINO</b><small>Development</small>
       </a>
-      <nav aria-label="Əsas naviqasiya">
-        <ul class="pill-nav">
-          <li><a href="#top" data-i18n="nav.home">Ana səhifə</a></li>
+      <nav class="nav" aria-label="Əsas naviqasiya">
+        <ul class="nav-links">
           <li><a href="#about" data-i18n="nav.about">Haqqımızda</a></li>
           <li><a href="#companies" data-i18n="nav.companies">Şirkətlər</a></li>
           <li><a href="#values" data-i18n="nav.values">Yanaşmamız</a></li>
           <li><a href="#contact" data-i18n="nav.contact">Əlaqə</a></li>
         </ul>
+        <div class="nav-right">
+          <div class="lang" role="group" aria-label="Dil">
+            <button type="button" data-lang="az" aria-pressed="true">AZ</button>
+            <button type="button" data-lang="ru" aria-pressed="false">RU</button>
+            <button type="button" data-lang="en" aria-pressed="false">EN</button>
+          </div>
+          <a class="nav-cta" href="#contact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg><span data-i18n="nav.cta">Bizimlə əlaqə</span></a>
+        </div>
       </nav>
-      <div class="lang" role="group" aria-label="Dil">
-        <button type="button" data-lang="az" aria-pressed="true">AZ</button>
-        <button type="button" data-lang="ru" aria-pressed="false">RU</button>
-        <button type="button" data-lang="en" aria-pressed="false">EN</button>
-      </div>
     </div>
   </header>
 
   <main id="top">
     <!-- HERO -->
     <section class="hero">
-      <div class="wrap">
-        <h1 class="display"><span data-i18n="hero.t1">Etibarlı tikinti,</span> <span data-i18n="hero.t2">davamlı</span> <span class="fade" data-i18n="hero.t3">dəyər.</span></h1>
-        <div class="hero-grid">
-          <div>
-            <p class="hero-lead" data-i18n="hero.lead"></p>
-            <div class="badge" aria-hidden="true">
-              <svg class="text" viewBox="0 0 132 132"><defs><path id="circ" d="M66 66m-54 0a54 54 0 1 1 108 0a54 54 0 1 1-108 0"/></defs><text><textPath href="#circ" id="badge-text"></textPath></text></svg>
-              <svg class="star" viewBox="0 0 24 24"><path d="M12 0c.6 6.6 5.4 11.4 12 12-6.6.6-11.4 5.4-12 12-.6-6.6-5.4-11.4-12-12C6.6 11.4 11.4 6.6 12 0Z"/></svg>
-            </div>
-          </div>
-          <div class="hero-media">
-            <div class="media" style="--img: url('assets/img/hero.jpg')" role="img" aria-label="Portofino layihəsi"></div>
-            <a class="arrow" href="#companies" aria-label="Şirkətlərimiz"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
-          </div>
+      <div class="media" style="--img: url('assets/img/hero.jpg')" role="img" aria-label="Portofino layihəsi"></div>
+      <div class="wrap hero-content">
+        <span class="gold-badge" data-i18n="hero.eyebrow">Şirkətlər qrupu</span>
+        <h1><span data-i18n="hero.t1">Etibarlı tikinti,</span> <em data-i18n="hero.t2">davamlı dəyər</em></h1>
+        <p class="hero-lead" data-i18n="hero.lead"></p>
+        <div class="hero-actions">
+          <a class="btn btn-gold" href="#companies" data-i18n="hero.btn1">Şirkətlərimiz</a>
+          <a class="btn btn-ghost" href="#contact" data-i18n="hero.btn2">Bizimlə əlaqə</a>
         </div>
       </div>
+      <span class="scroll-cue" data-i18n="hero.scroll">Aşağı keçin</span>
     </section>
 
     <!-- HAQQIMIZDA -->
-    <section class="about" id="about">
+    <section class="section about" id="about">
       <div class="wrap">
-        <div class="about-left">
-          <span class="label"><span class="ring"><svg viewBox="0 0 24 24"><path d="M12 0c.6 6.6 5.4 11.4 12 12-6.6.6-11.4 5.4-12 12-.6-6.6-5.4-11.4-12-12C6.6 11.4 11.4 6.6 12 0Z"/></svg></span><span data-i18n="about.label">Haqqımızda</span></span>
-          <div>
-            <p data-i18n="about.p2"></p>
-            <a class="btn" href="#companies" data-i18n="about.cta">Şirkətlərimiz</a>
-          </div>
-        </div>
         <div>
-          <h2 class="display"><span data-i18n="about.t1">Bir qrup,</span> <span class="fade" data-i18n="about.t2">ortaq standart.</span></h2>
-          <p class="about-text" data-i18n="about.p1"></p>
+          <p class="eyebrow" data-i18n="about.eyebrow">Haqqımızda</p>
+          <h2><span data-i18n="about.t1">Bir qrup.</span><br><span data-i18n="about.t2">Ortaq standart.</span></h2>
+          <div class="about-text">
+            <p data-i18n="about.p1"></p>
+            <p data-i18n="about.p2"></p>
+          </div>
           <div class="stats" id="stats"></div>
         </div>
-      </div>
-    </section>
-
-    <!-- GENİŞ ŞƏKİL -->
-    <section class="band" aria-hidden="true">
-      <div class="wrap">
-        <div class="band-shape media" style="--img: url('assets/img/band.jpg')">
-          <h2 class="display" data-i18n="band.title">Xəzər sahilində</h2>
+        <div class="about-media">
+          <div class="media" style="--img: url('assets/img/about.jpg')" role="img" aria-label="Portofino layihəsi"></div>
+          <div class="quote-card">
+            <p>“<span data-i18n="about.quote"></span>”</p>
+            <b data-i18n="about.sign">Portofino Development</b>
+            <span class="sub" data-i18n="about.signsub"></span>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- ŞİRKƏTLƏR -->
-    <section class="companies" id="companies">
-      <div class="wrap">
-        <div class="sec-head">
-          <span class="label"><span class="ring"><svg viewBox="0 0 24 24"><path d="M12 0c.6 6.6 5.4 11.4 12 12-6.6.6-11.4 5.4-12 12-.6-6.6-5.4-11.4-12-12C6.6 11.4 11.4 6.6 12 0Z"/></svg></span><span data-i18n="companies.label">Şirkətlərimiz</span></span>
-          <p data-i18n="companies.lead"></p>
-        </div>
-        <div class="cards" id="cards"></div>
+    <section class="section companies" id="companies">
+      <div class="wrap center">
+        <p class="eyebrow" data-i18n="companies.eyebrow">Şirkətlərimiz</p>
+        <h2 data-i18n="companies.title">Qrupa daxil olan şirkətlər</h2>
+        <p class="lead" data-i18n="companies.lead"></p>
+        <div class="cards" id="cards" style="text-align:left"></div>
       </div>
     </section>
 
     <!-- YANAŞMA -->
-    <section class="values" id="values">
-      <div class="wrap">
-        <div>
-          <span class="label"><span class="ring"><svg viewBox="0 0 24 24"><path d="M12 0c.6 6.6 5.4 11.4 12 12-6.6.6-11.4 5.4-12 12-.6-6.6-5.4-11.4-12-12C6.6 11.4 11.4 6.6 12 0Z"/></svg></span><span data-i18n="values.label">Yanaşmamız</span></span>
-          <h2 class="display"><span data-i18n="values.t1">Planlaşdırma,</span> <span data-i18n="values.t2">tikinti,</span> <span class="fade" data-i18n="values.t3">idarəetmə.</span></h2>
-          <p class="lead" data-i18n="values.lead"></p>
-          <ul class="vlist">
-            <li><b>01</b><div><h3 data-i18n="v1.title"></h3><p data-i18n="v1.text"></p></div></li>
-            <li><b>02</b><div><h3 data-i18n="v2.title"></h3><p data-i18n="v2.text"></p></div></li>
-            <li><b>03</b><div><h3 data-i18n="v3.title"></h3><p data-i18n="v3.text"></p></div></li>
-          </ul>
-        </div>
-        <div class="values-media">
-          <div class="media" style="--img: url('assets/img/values.jpg')" role="img" aria-label="Portofino layihəsi"></div>
-          <a class="arrow" href="#contact" aria-label="Əlaqə"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+    <section class="section values on-dark" id="values">
+      <div class="wrap center">
+        <p class="eyebrow" data-i18n="values.eyebrow">Yanaşmamız</p>
+        <h2 data-i18n="values.title">Fərq detallardadır</h2>
+        <div class="vgrid">
+          <div class="vitem"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg></div><h3 data-i18n="v1.title"></h3><p data-i18n="v1.text"></p></div>
+          <div class="vitem"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 20h20M6 20V10M10 20V6M14 20v-8M18 20V4M4 10h4M8 6h4M12 12h4M16 4h4"/></svg></div><h3 data-i18n="v2.title"></h3><p data-i18n="v2.text"></p></div>
+          <div class="vitem"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.3 8 11 4.6-1.7 8-6 8-11V5l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg></div><h3 data-i18n="v3.title"></h3><p data-i18n="v3.text"></p></div>
+          <div class="vitem"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9l-6-6Z"/><path d="M14 3v6h6M9 15l2 2 4-4"/></svg></div><h3 data-i18n="v4.title"></h3><p data-i18n="v4.text"></p></div>
         </div>
       </div>
     </section>
 
-    <!-- CTA -->
-    <section class="cta" id="contact">
+    <!-- FƏLSƏFƏ -->
+    <section class="section philosophy">
+      <div class="wrap center">
+        <p class="eyebrow" data-i18n="phil.eyebrow">Dəyərlərimiz</p>
+        <h2 data-i18n="phil.title">Davamlı dəyər fəlsəfəsi</h2>
+        <blockquote>“<span data-i18n="phil.text"></span>”</blockquote>
+        <ul class="keywords">
+          <li data-i18n="phil.k1"></li><li data-i18n="phil.k2"></li><li data-i18n="phil.k3"></li><li data-i18n="phil.k4"></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ƏLAQƏ -->
+    <section class="section contact on-dark" id="contact">
       <div class="wrap">
-        <h2 class="display"><span data-i18n="cta.t1">Gələcəyi</span><br><span class="fade" data-i18n="cta.t2">birlikdə quraq</span></h2>
-        <div class="cta-row">
-          <div class="media" style="--img: url('assets/img/cta.jpg')"></div>
-          <a class="arrow" id="c-arrow" href="#contact" aria-label="Əlaqə"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+        <div>
+          <p class="eyebrow" data-i18n="contact.eyebrow">Əlaqə</p>
+          <h2><span data-i18n="contact.t1">Bizimlə</span> <em data-i18n="contact.t2">əlaqə saxlayın</em></h2>
+          <p class="contact-text" data-i18n="contact.text"></p>
         </div>
-        <p class="cta-text" data-i18n="cta.text"></p>
-        <div class="cta-contacts"><a id="c-phone" href="#"></a><a id="c-email" href="#"></a></div>
+        <div class="contact-panel">
+          <a class="crow" id="c-phone" href="#"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg></span><div><small data-i18n="contact.phone">Telefon</small><span class="v"></span></div></a>
+          <a class="crow" id="c-email" href="#"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="m3 7 9 6 9-6"/></svg></span><div><small data-i18n="contact.email">E-poçt</small><span class="v"></span></div></a>
+          <div class="crow" id="c-address"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12Z"/><circle cx="12" cy="10" r="2.5"/></svg></span><div><small data-i18n="contact.address">Ünvan</small><span class="v"></span></div></div>
+        </div>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="wrap">
-      <a class="wordmark" href="#top" aria-label="Portofino Development">
-        <svg class="hex" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 2h11L23 12l-5.5 10h-11L1 12 6.5 2Zm1.2 2L3.3 12l4.4 8h8.6l4.4-8-4.4-8H7.7Z"/></svg>
-        <span class="wordmark-name" style="text-align:left"><b>PORTOFINO</b><small>DEVELOPMENT</small></span>
-      </a>
-      <p class="footer-note" data-i18n="footer.note"></p>
-      <p class="footer-address" id="f-address"></p>
-      <ul class="socials" id="c-social"></ul>
-      <ul class="footer-nav">
-        <li><a href="#top" data-i18n="nav.home">Ana səhifə</a></li>
-        <li><a href="#about" data-i18n="nav.about">Haqqımızda</a></li>
-        <li><a href="#companies" data-i18n="nav.companies">Şirkətlər</a></li>
-        <li><a href="#values" data-i18n="nav.values">Yanaşmamız</a></li>
-        <li><a href="#contact" data-i18n="nav.contact">Əlaqə</a></li>
-      </ul>
-      <p class="copyright">© <span id="year"></span> Portofino Development. <span data-i18n="footer.rights"></span></p>
+      <div class="fgrid">
+        <div>
+          <a class="wordmark" href="#top" aria-label="Portofino Development"><b>PORTOFINO</b><small>Development</small></a>
+          <p class="fnote" data-i18n="footer.note"></p>
+          <ul class="socials" id="c-social"></ul>
+        </div>
+        <div>
+          <h4 data-i18n="footer.companies">Şirkətlərimiz</h4>
+          <ul class="flist" id="footer-companies"></ul>
+        </div>
+        <div>
+          <h4 data-i18n="footer.contact">Əlaqə</h4>
+          <ul class="flist" id="footer-contact"></ul>
+        </div>
+      </div>
+      <div class="fbottom">
+        <span>© <span id="year"></span> Portofino Development. <span data-i18n="footer.rights"></span></span>
+      </div>
     </div>
   </footer>
 
