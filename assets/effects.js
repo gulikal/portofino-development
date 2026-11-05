@@ -102,6 +102,7 @@
     });
   }
   setupStats();
+  document.addEventListener("pd:render", setupStats);
 
   /* 4. Kartlar: 3D əyilmə və işıq */
   function setupCards() {

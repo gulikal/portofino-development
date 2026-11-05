@@ -152,6 +152,7 @@
     var social = document.getElementById("c-social");
     social.textContent = "";
     c.social.forEach(function (s) {
+      if (!s.url) return; // boş keçid göstərilmir
       var li = el("li");
       var a = el("a");
       a.href = s.url;
@@ -165,7 +166,10 @@
 
   // Şəkillər: data-img atributundan fon şəkli kimi yüklənir (fayl yoxdursa, brend fonu qalır)
   function applyImages() {
+    var imgs = SITE.images || {};
     document.querySelectorAll("[data-img]").forEach(function (n) {
+      var key = n.getAttribute("data-imgkey");
+      if (key && imgs[key]) n.setAttribute("data-img", imgs[key]);
       var src = new URL(n.getAttribute("data-img"), document.baseURI).href;
       n.style.backgroundImage = "url('" + src + "'), linear-gradient(160deg, #2E6E65 0%, #0F4F47 45%, #08372F 100%)";
     });
@@ -206,4 +210,56 @@
   document.getElementById("year").textContent = String(new Date().getFullYear());
   setLang(storedLang());
   onScroll();
+
+  /* İdarəetmə paneli: məzmun Firebase-dədirsə, oradan yüklənir.
+     assets/firebase-config.js doldurulmayıbsa, data.js-dəki məzmun istifadə olunur. */
+  var cfg = window.PD_FIREBASE;
+  // Paneldən yüklənmiş şəkillər Firestore-da "fsimg:ID" kimi saxlanılır
+  function fsImages(remote) {
+    var ids = [];
+    function scan(v) { if (typeof v === "string" && v.indexOf("fsimg:") === 0) ids.push(v.slice(6)); }
+    Object.keys(remote.images || {}).forEach(function (k) { scan(remote.images[k]); });
+    (remote.companies || []).forEach(function (c) { scan(c.image); scan(c.logo); });
+    if (!ids.length) return Promise.resolve(remote);
+    var map = {};
+    return Promise.all(ids.map(function (id) {
+      return fetch(base + "/images/" + encodeURIComponent(id) + keyQ).then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (d) { map[id] = d && d.fields && d.fields.data ? d.fields.data.stringValue : ""; })
+        .catch(function () { map[id] = ""; });
+    })).then(function () {
+      function rep(v) { return typeof v === "string" && v.indexOf("fsimg:") === 0 ? map[v.slice(6)] || "" : v; }
+      Object.keys(remote.images || {}).forEach(function (k) { remote.images[k] = rep(remote.images[k]); });
+      (remote.companies || []).forEach(function (c) { c.image = rep(c.image); c.logo = rep(c.logo); });
+      return remote;
+    });
+  }
+  var base = cfg && cfg.projectId ? "https://firestore.googleapis.com/v1/projects/" + encodeURIComponent(cfg.projectId) + "/databases/(default)/documents" : "";
+  var keyQ = cfg && cfg.apiKey ? "?key=" + encodeURIComponent(cfg.apiKey) : "";
+
+  function applyRemote(remote) {
+    // panelə sonradan əlavə olunan açarlar itməsin deyə data.js ilə birləşdiririk
+    ["az", "ru", "en"].forEach(function (l) {
+      remote.i18n = remote.i18n || {};
+      remote.i18n[l] = Object.assign({}, SITE.i18n[l], remote.i18n[l] || {});
+    });
+    SITE = window.SITE = Object.assign({}, SITE, remote);
+    setLang(document.documentElement.lang || storedLang());
+    document.dispatchEvent(new CustomEvent("pd:render"));
+  }
+  if (!(cfg && cfg.projectId)) {
+    // Demo rejimi: paneldə bu brauzerdə saxlanılan dəyişikliklər
+    try {
+      var demoRaw = window.localStorage.getItem("pd-demo-content");
+      if (demoRaw) applyRemote(JSON.parse(demoRaw));
+    } catch (e) { /* ignore */ }
+  } else {
+    fetch(base + "/site/content" + keyQ, { cache: "no-store" })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (doc) {
+        var raw = doc && doc.fields && doc.fields.json && doc.fields.json.stringValue;
+        if (!raw) return;
+        return fsImages(JSON.parse(raw)).then(applyRemote);
+      })
+      .catch(function () { /* şəbəkə xətası: data.js məzmunu qalır */ });
+  }
 })();

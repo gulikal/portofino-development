@@ -1,0 +1,659 @@
+<!doctype html>
+<html lang="az">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Portofino Development — İdarəetmə paneli</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Panel: sol menyu + iş sahəsi. Brend rəngləri, sakit və oxunaqlı. */
+:root {
+  --green: #0A433C; --green-2: #0F4F47; --deep: #062C27;
+  --gold: #E2B776; --gold-ink: #8C6A30;
+  --bg: #F4F1EA; --card: #FFFFFF; --ink: #1D2A27; --soft: #66746F; --line: #E2E0D8;
+  --ok: #2E7D5B; --warn: #B7791F; --err: #B42318;
+  --serif: "Playfair Display", Georgia, serif;
+  --sans: "Inter", "Segoe UI", Arial, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.55 var(--sans); -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+/* Giriş */
+.login { min-height: 100%; display: grid; place-items: center; padding: 24px; background: radial-gradient(ellipse 70% 60% at 50% 40%, #0F5249, var(--deep)); }
+.login-box { width: min(400px, 100%); background: var(--card); padding: 40px 36px 32px; box-shadow: 0 30px 70px rgba(0,0,0,.35); }
+.mark { display: flex; flex-direction: column; align-items: center; gap: 6px; line-height: 1; margin-bottom: 28px; color: var(--green); }
+.mark b { font: 400 26px var(--serif); letter-spacing: .2em; }
+.mark small { font: 600 9px var(--sans); letter-spacing: .44em; text-transform: uppercase; color: var(--gold-ink); }
+.login h1 { font: 500 15px var(--sans); text-align: center; margin: 0 0 22px; color: var(--soft); }
+.field { display: grid; gap: 6px; margin-bottom: 14px; }
+.field label, .lbl { font-size: 12px; font-weight: 600; color: var(--soft); letter-spacing: .02em; }
+input[type=text], input[type=email], input[type=password], input[type=url], select, textarea {
+  width: 100%; padding: 10px 12px; background: #fff; border: 1px solid var(--line); border-radius: 6px; outline: none; transition: border-color .2s, box-shadow .2s;
+}
+input:focus, select:focus, textarea:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(10,67,60,.1); }
+textarea { resize: vertical; min-height: 64px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 16px; border-radius: 6px; border: 1px solid var(--line); background: #fff; cursor: pointer; font-weight: 500; white-space: nowrap; transition: background .2s, border-color .2s, color .2s; }
+.btn:hover { border-color: var(--green); }
+.btn-primary { background: var(--green); border-color: var(--green); color: #fff; }
+.btn-primary:hover { background: var(--deep); }
+.btn-gold { background: var(--gold); border-color: var(--gold); color: #2A1D08; }
+.btn-ghost { border-color: transparent; background: transparent; }
+.btn-danger { color: var(--err); }
+.btn-danger:hover { border-color: var(--err); }
+.btn-sm { padding: 6px 10px; font-size: 13px; }
+.btn[disabled] { opacity: .5; cursor: default; }
+.wide { width: 100%; }
+.msg { margin-top: 12px; font-size: 13px; min-height: 20px; text-align: center; }
+.msg.err { color: var(--err); }
+.demo-note { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); text-align: center; font-size: 12.5px; color: var(--soft); }
+
+/* Panel */
+.app { display: grid; grid-template-columns: 240px minmax(0, 1fr); min-height: 100%; }
+.side { background: var(--deep); color: #fff; padding: 26px 16px; display: flex; flex-direction: column; gap: 24px; position: sticky; top: 0; height: 100vh; }
+.side .mark { color: #fff; align-items: flex-start; margin: 0 8px; }
+.side .mark small { color: var(--gold); }
+.nav { display: grid; gap: 2px; }
+.nav button { display: flex; align-items: center; gap: 12px; padding: 11px 12px; border: 0; border-radius: 6px; background: none; color: rgba(255,255,255,.72); cursor: pointer; text-align: left; }
+.nav button svg { width: 18px; height: 18px; flex: none; }
+.nav button:hover { background: rgba(255,255,255,.06); color: #fff; }
+.nav button[aria-current="true"] { background: rgba(226,183,118,.14); color: var(--gold); }
+.side-foot { margin-top: auto; display: grid; gap: 8px; font-size: 12px; color: rgba(255,255,255,.55); padding: 0 8px; }
+.side-foot .btn { background: transparent; color: rgba(255,255,255,.8); border-color: rgba(255,255,255,.2); }
+.main { min-width: 0; display: flex; flex-direction: column; }
+.top { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 16px 28px; background: rgba(244,241,234,.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+.top h2 { margin: 0; font: 500 22px var(--serif); color: var(--green); }
+.top-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.status { font-size: 12.5px; color: var(--soft); display: inline-flex; align-items: center; gap: 6px; }
+.status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--ok); }
+.status.dirty::before { background: var(--warn); }
+.status.dirty { color: var(--warn); }
+.content { padding: 28px; display: grid; gap: 20px; max-width: 1080px; width: 100%; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 22px; }
+.card h3 { margin: 0 0 4px; font: 600 15px var(--sans); }
+.card .hint { margin: 0 0 18px; color: var(--soft); font-size: 13px; }
+.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; }
+.demo-bar { background: #FFF6E5; border: 1px solid #F1D9A8; color: #7A5410; padding: 12px 16px; border-radius: 8px; font-size: 13px; }
+
+/* Dil tabları */
+.langs { display: inline-flex; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; margin-bottom: 14px; }
+.langs button { border: 0; background: #fff; padding: 7px 14px; cursor: pointer; font-weight: 600; font-size: 12.5px; color: var(--soft); }
+.langs button[aria-pressed="true"] { background: var(--green); color: #fff; }
+
+/* Şirkətlər siyahısı */
+.co-list { display: grid; gap: 10px; }
+.co-row { display: grid; grid-template-columns: 64px minmax(0,1fr) auto; gap: 16px; align-items: center; padding: 12px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+.co-thumb { width: 64px; height: 64px; border-radius: 6px; background: var(--green) center/cover; }
+.co-name { font-weight: 600; }
+.co-url { color: var(--soft); font-size: 12.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pill { display: inline-block; margin-left: 8px; padding: 2px 8px; border-radius: 99px; font-size: 11px; font-weight: 600; vertical-align: 2px; }
+.pill.active { background: #E6F4EC; color: var(--ok); }
+.pill.soon { background: #FFF3DC; color: var(--warn); }
+.pill.hidden { background: #EEE; color: #777; }
+.co-actions { display: flex; gap: 4px; }
+.icon-btn { width: 34px; height: 34px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 6px; background: #fff; cursor: pointer; }
+.icon-btn:hover { border-color: var(--green); }
+.icon-btn svg { width: 16px; height: 16px; }
+
+/* Şəkil sahəsi */
+.img-field { display: grid; grid-template-columns: 160px minmax(0,1fr); gap: 14px; align-items: start; }
+.img-prev { aspect-ratio: 4 / 3; border-radius: 6px; background: #E8E5DC center/cover no-repeat; border: 1px solid var(--line); display: grid; place-items: center; color: var(--soft); font-size: 12px; }
+.img-prev.logo { background-size: contain; background-color: var(--green); }
+.img-ctrl { display: grid; gap: 8px; }
+.img-ctrl .row { display: flex; gap: 8px; flex-wrap: wrap; }
+.upl { position: relative; overflow: hidden; }
+.upl input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+
+/* Mətnlər */
+.search { max-width: 320px; }
+.tx-group { border-top: 1px solid var(--line); padding-top: 16px; margin-top: 4px; }
+.tx-group h4 { margin: 0 0 12px; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--gold-ink); }
+.tx-row { display: grid; grid-template-columns: 180px repeat(3, minmax(0,1fr)); gap: 10px; align-items: start; padding: 8px 0; }
+.tx-key { font-size: 12.5px; color: var(--soft); padding-top: 9px; overflow-wrap: anywhere; }
+.tx-head { font-size: 11.5px; font-weight: 600; color: var(--soft); text-transform: uppercase; letter-spacing: .1em; }
+
+/* Modal */
+.modal { position: fixed; inset: 0; z-index: 50; background: rgba(6,44,39,.55); display: grid; place-items: center; padding: 20px; }
+.modal-box { background: var(--bg); width: min(760px, 100%); max-height: calc(100vh - 40px); overflow: auto; border-radius: 12px; box-shadow: 0 30px 80px rgba(0,0,0,.4); }
+.modal-head { position: sticky; top: 0; display: flex; justify-content: space-between; align-items: center; padding: 18px 22px; background: var(--bg); border-bottom: 1px solid var(--line); z-index: 1; }
+.modal-head h3 { margin: 0; font: 500 20px var(--serif); color: var(--green); }
+.modal-body { padding: 22px; display: grid; gap: 16px; }
+.modal-foot { position: sticky; bottom: 0; display: flex; justify-content: space-between; gap: 10px; padding: 16px 22px; background: var(--bg); border-top: 1px solid var(--line); }
+
+.toast { position: fixed; z-index: 60; left: 50%; bottom: 24px; transform: translate(-50%, 16px); opacity: 0; transition: .3s; background: var(--deep); color: #fff; padding: 12px 18px; border-radius: 8px; font-size: 13.5px; pointer-events: none; box-shadow: 0 16px 40px rgba(0,0,0,.25); }
+.toast.on { opacity: 1; transform: translate(-50%, 0); }
+.toast.err { background: var(--err); }
+
+.confirm-bar { display: flex; gap: 8px; align-items: center; font-size: 13px; color: var(--err); }
+
+@media (max-width: 860px) {
+  .app { grid-template-columns: minmax(0,1fr); }
+  .side { position: static; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; padding: 14px; gap: 12px; }
+  .side .mark { margin: 0; }
+  .nav { grid-auto-flow: column; overflow-x: auto; }
+  .nav button span { display: none; }
+  .side-foot { margin: 0 0 0 auto; }
+  .content { padding: 18px; }
+  .top { padding: 14px 18px; }
+  .grid2, .grid3, .img-field { grid-template-columns: minmax(0,1fr); }
+  .tx-row { grid-template-columns: minmax(0,1fr); }
+  .tx-key { padding-top: 6px; font-weight: 600; }
+}
+</style>
+</head>
+<body>
+
+<!-- GİRİŞ -->
+<section class="login" id="loginView">
+  <form class="login-box" id="loginForm" autocomplete="on">
+    <div class="mark"><b>PORTOFINO</b><small>Development</small></div>
+    <h1>İdarəetmə paneli</h1>
+    <div id="loginFields">
+      <div class="field"><label for="email">E-poçt</label><input id="email" type="email" autocomplete="username" required></div>
+      <div class="field"><label for="password">Şifrə</label><input id="password" type="password" autocomplete="current-password" required></div>
+      <button class="btn btn-primary wide" type="submit" id="loginBtn">Daxil ol</button>
+    </div>
+    <p class="msg" id="loginMsg" role="alert"></p>
+    <div class="demo-note" id="demoNote" hidden>
+      <p style="margin:0 0 10px">Firebase hələ qoşulmayıb. Paneli sınamaq üçün demo rejimindən istifadə edin: dəyişikliklər yalnız bu brauzerdə saxlanılır.</p>
+      <button class="btn btn-gold wide" type="button" id="demoBtn">Demo rejimində aç</button>
+    </div>
+  </form>
+</section>
+
+<!-- PANEL -->
+<div class="app" id="appView" hidden>
+  <aside class="side">
+    <div class="mark"><b>PORTOFINO</b><small>İdarəetmə</small></div>
+    <nav class="nav" aria-label="Bölmələr">
+      <button type="button" data-tab="companies" aria-current="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg><span>Şirkətlər</span></button>
+      <button type="button" data-tab="texts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6h16M4 12h16M4 18h10"/></svg><span>Mətnlər</span></button>
+      <button type="button" data-tab="images"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></svg><span>Şəkillər</span></button>
+      <button type="button" data-tab="stats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Rəqəmlər</span></button>
+      <button type="button" data-tab="contact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="m3 7 9 6 9-6"/></svg><span>Əlaqə</span></button>
+    </nav>
+    <div class="side-foot">
+      <span id="whoami"></span>
+      <button class="btn btn-sm" type="button" id="logoutBtn">Çıxış</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="top">
+      <h2 id="tabTitle">Şirkətlər</h2>
+      <div class="top-actions">
+        <span class="status" id="status">Hamısı saxlanılıb</span>
+        <a class="btn" href="../" target="_blank" rel="noopener">Saytı aç ↗</a>
+        <button class="btn btn-primary" type="button" id="saveBtn" disabled>Yadda saxla</button>
+      </div>
+    </header>
+    <div class="content" id="content"></div>
+  </main>
+</div>
+
+<!-- ŞİRKƏT REDAKTORU -->
+<div class="modal" id="coModal" hidden role="dialog" aria-modal="true" aria-labelledby="coModalTitle">
+  <div class="modal-box">
+    <div class="modal-head"><h3 id="coModalTitle">Şirkət</h3><button class="icon-btn" type="button" data-close aria-label="Bağla"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+    <div class="modal-body" id="coBody"></div>
+    <div class="modal-foot">
+      <span id="coDelWrap"></span>
+      <div style="display:flex;gap:8px"><button class="btn" type="button" data-close>Ləğv et</button><button class="btn btn-primary" type="button" id="coApply">Tətbiq et</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="../assets/data.js"></script>
+<script src="../assets/firebase-config.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+(function () {
+  "use strict";
+  var LANGS = [["az", "AZ"], ["ru", "RU"], ["en", "EN"]];
+  var DEMO_KEY = "pd-demo-content";
+  var cfg = window.PD_FIREBASE || {};
+  var useFirebase = !!(cfg.projectId && cfg.apiKey && window.firebase);
+  var demo = false;
+  var db, auth;
+  var state = null;          // panelin işlədiyi məzmun
+  var dirty = false;
+  var tab = "companies";
+  var editLang = "az";
+
+  var $ = function (id) { return document.getElementById(id); };
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function clone(o) { return JSON.parse(JSON.stringify(o)); }
+  function toast(msg, isErr) {
+    var t = $("toast"); t.textContent = msg; t.className = "toast on" + (isErr ? " err" : "");
+    clearTimeout(toast.t); toast.t = setTimeout(function () { t.className = "toast"; }, 2600);
+  }
+  function setDirty(v) {
+    dirty = v;
+    $("saveBtn").disabled = !v;
+    var s = $("status");
+    s.textContent = v ? "Saxlanmamış dəyişikliklər var" : "Hamısı saxlanılıb";
+    s.className = "status" + (v ? " dirty" : "");
+  }
+  window.addEventListener("beforeunload", function (e) { if (dirty) { e.preventDefault(); e.returnValue = ""; } });
+
+  /* ---------- Məlumat: yükləmə və saxlama ---------- */
+  function defaults() {
+    var s = clone(window.SITE);
+    s.images = s.images || { hero: "assets/img/hero.jpg", about: "assets/img/about.jpg", band: "assets/img/band.jpg" };
+    return s;
+  }
+  function mergeDefaults(remote) {
+    var d = defaults();
+    var out = Object.assign({}, d, remote);
+    out.i18n = {};
+    LANGS.forEach(function (l) { out.i18n[l[0]] = Object.assign({}, d.i18n[l[0]], (remote.i18n || {})[l[0]] || {}); });
+    out.images = Object.assign({}, d.images, remote.images || {});
+    return out;
+  }
+  function load() {
+    if (demo) {
+      var raw = null;
+      try { raw = localStorage.getItem(DEMO_KEY); } catch (e) { /* ignore */ }
+      return Promise.resolve(raw ? mergeDefaults(JSON.parse(raw)) : defaults());
+    }
+    return db.collection("site").doc("content").get().then(function (snap) {
+      if (snap.exists && snap.data().json) return mergeDefaults(JSON.parse(snap.data().json));
+      return defaults(); // ilk dəfə: data.js-dəki məzmunla başlayır
+    });
+  }
+  function save() {
+    var json = JSON.stringify(state);
+    $("saveBtn").disabled = true;
+    $("saveBtn").textContent = "Saxlanılır…";
+    var p;
+    if (demo) {
+      p = new Promise(function (res, rej) {
+        try { localStorage.setItem(DEMO_KEY, json); res(); } catch (e) { rej(new Error("Brauzer yaddaşı doludur. Daha kiçik şəkil seçin.")); }
+      });
+    } else {
+      p = db.collection("site").doc("content").set({
+        json: json,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedBy: (auth.currentUser && auth.currentUser.email) || ""
+      });
+    }
+    return p.then(function () {
+      setDirty(false);
+      toast("Yadda saxlanıldı. Saytda dərhal görünəcək.");
+    }).catch(function (err) {
+      setDirty(true);
+      toast("Saxlamaq alınmadı: " + (err.message || err), true);
+    }).then(function () { $("saveBtn").textContent = "Yadda saxla"; });
+  }
+  $("saveBtn").addEventListener("click", save);
+  document.addEventListener("keydown", function (e) {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") { e.preventDefault(); if (dirty) save(); }
+  });
+
+  /* ---------- Şəkil yükləmə (sıxılaraq) ---------- */
+  function compress(file, maxW, keepPng) {
+    return new Promise(function (resolve, reject) {
+      if (file.type === "image/svg+xml") { resolve(file); return; }
+      var img = new Image();
+      img.onload = function () {
+        var s = Math.min(1, maxW / img.width);
+        var c = document.createElement("canvas");
+        c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+        c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+        c.toBlob(function (b) { b ? resolve(b) : reject(new Error("Şəkil emal olunmadı")); }, keepPng ? "image/png" : "image/jpeg", 0.82);
+        URL.revokeObjectURL(img.src);
+      };
+      img.onerror = function () { reject(new Error("Bu fayl şəkil deyil")); };
+      img.src = URL.createObjectURL(file);
+    });
+  }
+  // Şəkillər Firestore-da saxlanılır (pulsuz plan, kart tələb etmir).
+  // Hər şəkil ayrıca sənəddə: sayt onu "fsimg:ID" kimi tanıyır və yükləyir.
+  function blobToDataUrl(blob) {
+    return new Promise(function (res) { var r = new FileReader(); r.onload = function () { res(r.result); }; r.readAsDataURL(blob); });
+  }
+  function fit(file, isLogo) {
+    // Firestore sənədi maks. 1 MB ola bilər: şəkli bu həddə sığana qədər kiçildirik
+    var sizes = isLogo ? [800, 600, 400] : [1800, 1500, 1200, 1000];
+    var i = 0;
+    function tryNext() {
+      return compress(file, sizes[i], isLogo).then(blobToDataUrl).then(function (d) {
+        if (d.length < 900000 || i === sizes.length - 1) return d;
+        i++; return tryNext();
+      });
+    }
+    return tryNext();
+  }
+  function upload(file, folder, isLogo) {
+    return fit(file, isLogo).then(function (dataUrl) {
+      if (dataUrl.length > 1000000) throw new Error("Şəkil çox böyükdür");
+      if (demo) return dataUrl;
+      var id = folder + "-" + Date.now();
+      return db.collection("images").doc(id).set({ data: dataUrl, createdAt: firebase.firestore.FieldValue.serverTimestamp() })
+        .then(function () { imgCache[id] = dataUrl; return "fsimg:" + id; });
+    });
+  }
+  var imgCache = {};
+  function resolveImg(v) {
+    // "fsimg:ID" -> data URL (önizləmə üçün)
+    if (!v || v.indexOf("fsimg:") !== 0) return Promise.resolve(v);
+    var id = v.slice(6);
+    if (imgCache[id]) return Promise.resolve(imgCache[id]);
+    if (!db) return Promise.resolve("");
+    return db.collection("images").doc(id).get().then(function (s) { var d = s.exists ? s.data().data : ""; imgCache[id] = d; return d; });
+  }
+  function siteUrl(u) { if (!u) return ""; return /^(https?:|data:)/.test(u) ? u : "../" + u; }
+
+  /* ---------- Bölmələr ---------- */
+  var TITLES = { companies: "Şirkətlər", texts: "Mətnlər", images: "Şəkillər", stats: "Rəqəmlər", contact: "Əlaqə" };
+  document.querySelectorAll(".nav button").forEach(function (b) {
+    b.addEventListener("click", function () { tab = b.getAttribute("data-tab"); render(); });
+  });
+  function langTabs(onChange) {
+    var w = document.createElement("div"); w.className = "langs"; w.setAttribute("role", "group"); w.setAttribute("aria-label", "Dil");
+    LANGS.forEach(function (l) {
+      var b = document.createElement("button"); b.type = "button"; b.textContent = l[1];
+      b.setAttribute("aria-pressed", String(l[0] === editLang));
+      b.addEventListener("click", function () { editLang = l[0]; onChange(); });
+      w.appendChild(b);
+    });
+    return w;
+  }
+  function render() {
+    document.querySelectorAll(".nav button").forEach(function (b) { b.setAttribute("aria-current", String(b.getAttribute("data-tab") === tab)); });
+    $("tabTitle").textContent = TITLES[tab];
+    var c = $("content"); c.innerHTML = "";
+    if (demo) {
+      var d = document.createElement("div"); d.className = "demo-bar";
+      d.innerHTML = "<b>Demo rejimi.</b> Dəyişikliklər yalnız bu brauzerdə saxlanılır və saytı bu brauzerdə açanda görünür. Firebase qoşulandan sonra bütün ziyarətçilər görəcək.";
+      c.appendChild(d);
+    }
+    ({ companies: renderCompanies, texts: renderTexts, images: renderImages, stats: renderStats, contact: renderContact })[tab](c);
+  }
+
+  /* Şirkətlər */
+  var STATUS = { active: "Aktiv", soon: "Tezliklə", hidden: "Gizli" };
+  function renderCompanies(c) {
+    var card = document.createElement("div"); card.className = "card";
+    card.innerHTML = '<div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start"><div><h3>Qrupa daxil olan şirkətlər</h3><p class="hint">Sıranı oxlarla dəyişin. “Gizli” şirkət saytda görünmür, “Tezliklə” xüsusi kart kimi göstərilir.</p></div><button class="btn btn-gold" type="button" id="addCo">+ Yeni şirkət</button></div><div class="co-list" id="coList"></div>';
+    c.appendChild(card);
+    var list = card.querySelector("#coList");
+    state.companies.forEach(function (co, i) {
+      var row = document.createElement("div"); row.className = "co-row";
+      var img = co.image && co.image.indexOf("fsimg:") !== 0 ? siteUrl(co.image) : "";
+      row.innerHTML =
+        '<div class="co-thumb" style="' + (img ? "background-image:url(&quot;" + esc(img) + "&quot;)" : "") + '"></div>' +
+        '<div style="min-width:0"><div class="co-name">' + esc(co.name.az || "—") + '<span class="pill ' + esc(co.status) + '">' + STATUS[co.status] + '</span></div><div class="co-url">' + esc(co.url || "Keçid yoxdur") + '</div></div>' +
+        '<div class="co-actions">' +
+        '<button class="icon-btn" type="button" data-act="up" aria-label="Yuxarı"' + (i === 0 ? " disabled" : "") + '><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>' +
+        '<button class="icon-btn" type="button" data-act="down" aria-label="Aşağı"' + (i === state.companies.length - 1 ? " disabled" : "") + '><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></button>' +
+        '<button class="btn btn-sm" type="button" data-act="edit">Redaktə et</button></div>';
+      row.querySelector('[data-act="up"]').addEventListener("click", function () { move(i, -1); });
+      row.querySelector('[data-act="down"]').addEventListener("click", function () { move(i, 1); });
+      row.querySelector('[data-act="edit"]').addEventListener("click", function () { openCompany(i); });
+      if (co.image && co.image.indexOf("fsimg:") === 0) resolveImg(co.image).then(function (d) { if (d) row.querySelector(".co-thumb").style.backgroundImage = 'url("' + d + '")'; });
+      list.appendChild(row);
+    });
+    card.querySelector("#addCo").addEventListener("click", function () { openCompany(-1); });
+  }
+  function move(i, d) {
+    var a = state.companies, j = i + d; if (j < 0 || j >= a.length) return;
+    var t = a[i]; a[i] = a[j]; a[j] = t; setDirty(true); render();
+  }
+  function blankCompany() {
+    var o = function () { return { az: "", ru: "", en: "" }; };
+    return { id: "co-" + Date.now(), status: "active", url: "", image: "", logo: "", logoText: ["", ""], tag: o(), place: o(), name: o(), text: o() };
+  }
+  var draft = null, draftIndex = -1;
+  function openCompany(i) {
+    draftIndex = i;
+    draft = i < 0 ? blankCompany() : clone(state.companies[i]);
+    draft.logoText = draft.logoText || ["", ""];
+    $("coModalTitle").textContent = i < 0 ? "Yeni şirkət" : (draft.name.az || "Şirkət");
+    renderCompanyForm();
+    var dw = $("coDelWrap"); dw.innerHTML = "";
+    if (i >= 0) {
+      var del = document.createElement("button"); del.type = "button"; del.className = "btn btn-danger"; del.textContent = "Sil";
+      del.addEventListener("click", function () {
+        dw.innerHTML = '<span class="confirm-bar">Silinsin? <button class="btn btn-sm btn-danger" type="button" id="delYes">Bəli, sil</button><button class="btn btn-sm" type="button" id="delNo">Xeyr</button></span>';
+        $("delYes").addEventListener("click", function () { state.companies.splice(draftIndex, 1); setDirty(true); closeModal(); render(); toast("Şirkət silindi. “Yadda saxla” düyməsini basın."); });
+        $("delNo").addEventListener("click", function () { openCompany(draftIndex); });
+      });
+      dw.appendChild(del);
+    }
+    $("coModal").hidden = false;
+    setTimeout(function () { var f = $("coBody").querySelector("input,select"); if (f) f.focus(); }, 30);
+  }
+  function closeModal() { $("coModal").hidden = true; draft = null; }
+  document.querySelectorAll("[data-close]").forEach(function (b) { b.addEventListener("click", closeModal); });
+  $("coModal").addEventListener("click", function (e) { if (e.target === $("coModal")) closeModal(); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !$("coModal").hidden) closeModal(); });
+  $("coApply").addEventListener("click", function () {
+    if (!draft.name.az.trim()) { toast("Şirkətin adını (AZ) yazın.", true); return; }
+    if (draft.status === "active" && !/^https?:\/\//.test(draft.url)) { toast("Aktiv şirkət üçün sayt ünvanı https:// ilə başlamalıdır.", true); return; }
+    if (draftIndex < 0) state.companies.push(draft); else state.companies[draftIndex] = draft;
+    setDirty(true); closeModal(); render();
+    toast("Tətbiq olundu. Saytda görünməsi üçün “Yadda saxla” düyməsini basın.");
+  });
+
+  function imgField(label, value, isLogo, folder, onSet) {
+    var w = document.createElement("div"); w.className = "field";
+    w.innerHTML = '<span class="lbl">' + label + '</span><div class="img-field"><div class="img-prev' + (isLogo ? " logo" : "") + '"></div><div class="img-ctrl"><div class="row"><label class="btn btn-sm upl">Fayl seç<input type="file" accept="image/*"></label><button class="btn btn-sm btn-ghost" type="button">Sil</button></div><input type="text" placeholder="və ya şəklin ünvanı (URL)"><span class="hint" style="font-size:12px;color:var(--soft)">' + (isLogo ? "SVG və ya şəffaf PNG tövsiyə olunur." : "Şəkil avtomatik sıxılır (maks. 2000 px).") + '</span></div></div>';
+    var prev = w.querySelector(".img-prev"), url = w.querySelector('input[type="text"]');
+    function show(v) {
+      prev.textContent = v ? "Yüklənir…" : "Şəkil yoxdur"; prev.style.backgroundImage = "";
+      url.value = v && v.indexOf("data:") !== 0 && v.indexOf("fsimg:") !== 0 ? v : (v ? "(yüklənmiş şəkil)" : "");
+      resolveImg(v).then(function (r) { if (!r) return; prev.style.backgroundImage = 'url("' + siteUrl(r).replace(/"/g, "%22") + '")'; prev.textContent = ""; });
+    }
+    show(value);
+    w.querySelector('input[type="file"]').addEventListener("change", function (e) {
+      var f = e.target.files[0]; if (!f) return;
+      prev.textContent = "Yüklənir…"; prev.style.backgroundImage = "";
+      upload(f, folder, isLogo).then(function (u) { onSet(u); show(u); setDirty(true); toast("Şəkil yükləndi."); })
+        .catch(function (err) { show(value); toast("Yükləmək alınmadı: " + (err.message || err), true); });
+      e.target.value = "";
+    });
+    w.querySelector(".btn-ghost").addEventListener("click", function () { onSet(""); show(""); setDirty(true); });
+    url.addEventListener("change", function () { if (url.value === "(yüklənmiş şəkil)") return; onSet(url.value.trim()); show(url.value.trim()); setDirty(true); });
+    return w;
+  }
+
+  function renderCompanyForm() {
+    var b = $("coBody"); b.innerHTML = "";
+    var top = document.createElement("div"); top.className = "grid2";
+    top.innerHTML =
+      '<div class="field"><label for="f-status">Status</label><select id="f-status"><option value="active">Aktiv — kart sayta keçid verir</option><option value="soon">Tezliklə — xüsusi kart</option><option value="hidden">Gizli — saytda görünmür</option></select></div>' +
+      '<div class="field"><label for="f-url">Rəsmi sayt ünvanı</label><input id="f-url" type="url" placeholder="https://"></div>';
+    b.appendChild(top);
+    $("f-status").value = draft.status; $("f-url").value = draft.url || "";
+    $("f-status").addEventListener("change", function (e) { draft.status = e.target.value; });
+    $("f-url").addEventListener("input", function (e) { draft.url = e.target.value.trim(); });
+
+    b.appendChild(imgField("Kartın şəkli", draft.image, false, "companies", function (v) { draft.image = v; }));
+    b.appendChild(imgField("Loqo (şəklin üzərində görünür)", draft.logo, true, "logos", function (v) { draft.logo = v; }));
+
+    var lt = document.createElement("div"); lt.className = "grid2";
+    lt.innerHTML = '<div class="field"><label for="f-lt1">Mətn loqosu, 1-ci sətir</label><input id="f-lt1" type="text" placeholder="məs. PORTOFINO"></div><div class="field"><label for="f-lt2">Mətn loqosu, 2-ci sətir</label><input id="f-lt2" type="text" placeholder="məs. RESIDENCE"></div>';
+    b.appendChild(lt);
+    $("f-lt1").value = draft.logoText[0] || ""; $("f-lt2").value = draft.logoText[1] || "";
+    $("f-lt1").addEventListener("input", function (e) { draft.logoText[0] = e.target.value; });
+    $("f-lt2").addEventListener("input", function (e) { draft.logoText[1] = e.target.value; });
+
+    var tr = document.createElement("div"); tr.className = "card";
+    tr.innerHTML = '<h3>Mətnlər</h3><p class="hint">Hər dil üçün ayrıca doldurun.</p>';
+    tr.appendChild(langTabs(renderCompanyForm));
+    var f = document.createElement("div"); f.style.display = "grid"; f.style.gap = "4px";
+    [["name", "Şirkətin adı", "input"], ["tag", "Etiket (məs. Tikinti)", "input"], ["place", "Yer (məs. Sea Breeze, Bakı)", "input"], ["text", "Qısa təqdimat mətni", "textarea"]].forEach(function (x) {
+      var id = "f-" + x[0];
+      var fl = document.createElement("div"); fl.className = "field";
+      fl.innerHTML = '<label for="' + id + '">' + x[1] + ' (' + editLang.toUpperCase() + ')</label>' + (x[2] === "textarea" ? '<textarea id="' + id + '"></textarea>' : '<input id="' + id + '" type="text">');
+      var inp = fl.querySelector(x[2]);
+      draft[x[0]] = draft[x[0]] || {};
+      inp.value = draft[x[0]][editLang] || "";
+      inp.addEventListener("input", function (e) { draft[x[0]][editLang] = e.target.value; });
+      f.appendChild(fl);
+    });
+    tr.appendChild(f);
+    b.appendChild(tr);
+  }
+
+  /* Mətnlər */
+  var GROUPS = [
+    ["nav", "Menyu"], ["hero", "Giriş ekranı"], ["about", "Haqqımızda"], ["rise", "Tikinti bölməsi"], ["companies", "Şirkətlər bölməsi"],
+    ["card", "Kart düymələri"], ["soon", "Tezliklə kartı"], ["values", "Yanaşmamız"], ["v1", "Yanaşma 1"], ["v2", "Yanaşma 2"], ["v3", "Yanaşma 3"], ["v4", "Yanaşma 4"],
+    ["phil", "Dəyərlərimiz"], ["contact", "Əlaqə bölməsi"], ["footer", "Footer"], ["meta", "Axtarış sistemləri (SEO)"], ["ui", "Kiçik bildirişlər"]
+  ];
+  function renderTexts(c) {
+    var card = document.createElement("div"); card.className = "card";
+    card.innerHTML = '<h3>Saytın mətnləri</h3><p class="hint">Hər sətir saytda bir yerdir. Üç dildə eyni anda redaktə edə bilərsiniz.</p><input class="search" type="text" id="txSearch" placeholder="Axtar…">';
+    c.appendChild(card);
+    var holder = document.createElement("div"); card.appendChild(holder);
+    function draw(q) {
+      holder.innerHTML = "";
+      q = (q || "").toLowerCase();
+      var keys = Object.keys(state.i18n.az);
+      GROUPS.forEach(function (g) {
+        var ks = keys.filter(function (k) { return k.split(".")[0] === g[0]; }).filter(function (k) {
+          if (!q) return true;
+          return k.toLowerCase().indexOf(q) > -1 || LANGS.some(function (l) { return String(state.i18n[l[0]][k] || "").toLowerCase().indexOf(q) > -1; });
+        });
+        if (!ks.length) return;
+        var grp = document.createElement("div"); grp.className = "tx-group";
+        grp.innerHTML = '<h4>' + g[1] + '</h4><div class="tx-row"><span></span><span class="tx-head">AZ</span><span class="tx-head">RU</span><span class="tx-head">EN</span></div>';
+        ks.forEach(function (k) {
+          var row = document.createElement("div"); row.className = "tx-row";
+          row.innerHTML = '<span class="tx-key">' + esc(k) + '</span>';
+          LANGS.forEach(function (l) {
+            var v = state.i18n[l[0]][k] || "";
+            var long = v.length > 60;
+            var inp = document.createElement(long ? "textarea" : "input");
+            if (!long) inp.type = "text";
+            inp.value = v; inp.setAttribute("aria-label", k + " " + l[1]);
+            inp.addEventListener("input", function () { state.i18n[l[0]][k] = inp.value; setDirty(true); });
+            row.appendChild(inp);
+          });
+          grp.appendChild(row);
+        });
+        holder.appendChild(grp);
+      });
+      if (!holder.children.length) holder.innerHTML = '<p class="hint" style="margin-top:16px">Heç nə tapılmadı.</p>';
+    }
+    draw("");
+    card.querySelector("#txSearch").addEventListener("input", function (e) { draw(e.target.value); });
+  }
+
+  /* Şəkillər */
+  function renderImages(c) {
+    var card = document.createElement("div"); card.className = "card";
+    card.innerHTML = '<h3>Bölmə şəkilləri</h3><p class="hint">Şirkət kartlarının şəkilləri “Şirkətlər” bölməsindədir.</p>';
+    var g = document.createElement("div"); g.style.display = "grid"; g.style.gap = "18px";
+    [["hero", "Giriş ekranı (geniş, 16:9)"], ["about", "Haqqımızda (şaquli, 4:5)"], ["band", "Geniş şəkil zolağı (21:9)"]].forEach(function (x) {
+      g.appendChild(imgField(x[1], state.images[x[0]], false, "sections", function (v) { state.images[x[0]] = v; }));
+    });
+    card.appendChild(g); c.appendChild(card);
+  }
+
+  /* Rəqəmlər */
+  function renderStats(c) {
+    var card = document.createElement("div"); card.className = "card";
+    card.innerHTML = '<h3>Haqqımızda bölməsindəki rəqəmlər</h3><p class="hint">Rəqəm saytda sayılaraq görünür. Yalnız dəqiq və təsdiqlənmiş rəqəmlər yazın.</p>';
+    card.appendChild(langTabs(render));
+    state.stats.forEach(function (s, i) {
+      var row = document.createElement("div"); row.className = "grid3"; row.style.marginBottom = "10px";
+      row.innerHTML = '<div class="field"><label>Rəqəm ' + (i + 1) + '</label><input type="text" data-v></div><div class="field" style="grid-column:span 2"><label>Açıqlama (' + editLang.toUpperCase() + ')</label><input type="text" data-l></div>';
+      var v = row.querySelector("[data-v]"), l = row.querySelector("[data-l]");
+      v.value = s.value; l.value = s.label[editLang] || "";
+      v.addEventListener("input", function () { s.value = v.value.replace(/[^\d.]/g, ""); setDirty(true); });
+      l.addEventListener("input", function () { s.label[editLang] = l.value; setDirty(true); });
+      card.appendChild(row);
+    });
+    c.appendChild(card);
+  }
+
+  /* Əlaqə */
+  function renderContact(c) {
+    var ct = state.contact;
+    var card = document.createElement("div"); card.className = "card";
+    card.innerHTML = '<h3>Əlaqə məlumatları</h3><p class="hint">Saytın “Əlaqə” bölməsində, mobil menyuda və footerdə görünür.</p>' +
+      '<div class="grid2"><div class="field"><label for="c-phone">Telefon</label><input id="c-phone" type="text"></div><div class="field"><label for="c-email">E-poçt</label><input id="c-email" type="email"></div></div>';
+    c.appendChild(card);
+    $("c-phone").value = ct.phone; $("c-email").value = ct.email;
+    $("c-phone").addEventListener("input", function (e) { ct.phone = e.target.value; setDirty(true); });
+    $("c-email").addEventListener("input", function (e) { ct.email = e.target.value.trim(); setDirty(true); });
+    var addr = document.createElement("div"); addr.className = "grid3";
+    LANGS.forEach(function (l) {
+      var f = document.createElement("div"); f.className = "field";
+      f.innerHTML = '<label>Ünvan (' + l[1] + ')</label><input type="text">';
+      var i = f.querySelector("input"); i.value = ct.address[l[0]] || "";
+      i.addEventListener("input", function () { ct.address[l[0]] = i.value; setDirty(true); });
+      addr.appendChild(f);
+    });
+    card.appendChild(addr);
+
+    var soc = document.createElement("div"); soc.className = "card";
+    soc.innerHTML = '<h3>Sosial şəbəkələr</h3><p class="hint">Boş qalan keçid saytda göstərilmir.</p>';
+    ct.social.forEach(function (s) {
+      var f = document.createElement("div"); f.className = "field";
+      f.innerHTML = '<label>' + esc(s.name) + '</label><input type="url" placeholder="https://">';
+      var i = f.querySelector("input"); i.value = s.url === "#" ? "" : s.url;
+      i.addEventListener("input", function () { s.url = i.value.trim(); setDirty(true); });
+      soc.appendChild(f);
+    });
+    c.appendChild(soc);
+  }
+
+  /* ---------- Giriş / çıxış ---------- */
+  function enter(who) {
+    $("loginView").hidden = true; $("appView").hidden = false;
+    $("whoami").textContent = who;
+    $("content").innerHTML = '<div class="card">Yüklənir…</div>';
+    load().then(function (s) { state = s; setDirty(false); render(); })
+      .catch(function (err) { $("content").innerHTML = '<div class="card" style="color:var(--err)">Məzmunu yükləmək alınmadı: ' + esc(err.message || err) + '</div>'; });
+  }
+  function leave() {
+    if (dirty) { toast("Əvvəlcə dəyişiklikləri yadda saxlayın və ya səhifəni yeniləyin.", true); return; }
+    if (demo) { demo = false; $("appView").hidden = true; $("loginView").hidden = false; return; }
+    auth.signOut();
+  }
+  $("logoutBtn").addEventListener("click", leave);
+
+  if (useFirebase) {
+    firebase.initializeApp(cfg);
+    auth = firebase.auth(); db = firebase.firestore();
+    auth.onAuthStateChanged(function (u) {
+      if (u) enter(u.email); else { $("appView").hidden = true; $("loginView").hidden = false; }
+    });
+    $("loginForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      var btn = $("loginBtn"), msg = $("loginMsg");
+      btn.disabled = true; btn.textContent = "Yoxlanılır…"; msg.textContent = ""; msg.className = "msg";
+      auth.signInWithEmailAndPassword($("email").value.trim(), $("password").value)
+        .catch(function (err) {
+          msg.className = "msg err";
+          msg.textContent = /wrong-password|invalid-credential|user-not-found|invalid-login/.test(err.code || "") ? "E-poçt və ya şifrə yanlışdır." : "Daxil olmaq alınmadı. İnternet bağlantısını yoxlayın.";
+        })
+        .then(function () { btn.disabled = false; btn.textContent = "Daxil ol"; });
+    });
+  } else {
+    // Firebase qoşulmayıb: demo rejimi
+    $("loginFields").hidden = true;
+    $("demoNote").hidden = false;
+    $("demoBtn").addEventListener("click", function () { demo = true; enter("Demo istifadəçi"); });
+  }
+})();
+</script>
+</body>
+</html>

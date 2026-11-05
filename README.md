@@ -60,3 +60,26 @@ server {
   location /assets/ { expires 30d; add_header Cache-Control "public"; }
 }
 ```
+
+
+## İdarəetmə paneli (admin)
+
+Ünvan: `saytın-ünvanı/admin/` (məsələn, `https://portofino-development.netlify.app/admin/`)
+
+Məzmun Google Firebase-də saxlanılır (layihə: `portofino-development`, pulsuz Spark planı, kart tələb etmir).
+Panel vasitəsilə: şirkətlər (əlavə et, redaktə et, sırala, gizlət, "Tezliklə"), bütün mətnlər (AZ/RU/EN),
+bölmə şəkilləri, rəqəmlər və əlaqə məlumatları dəyişdirilir. "Yadda saxla" basılan kimi saytda görünür.
+
+### Admin istifadəçisi əlavə etmək
+1. https://console.firebase.google.com/project/portofino-development/authentication/users
+2. "Add user" → e-poçt və güclü şifrə → "Add user".
+3. Bu e-poçt və şifrə ilə `/admin/` səhifəsinə daxil olun.
+
+### Təhlükəsizlik
+- `firestore.rules`: hər kəs yalnız oxuya bilər, yalnız daxil olmuş admin dəyişə bilər.
+- `assets/firebase-config.js`-dəki açar gizli deyil (Firebase-in açıq identifikatorudur), qorunmanı qaydalar təmin edir.
+- `/admin/` səhifəsi axtarış sistemlərində göstərilmir (`noindex`).
+
+### Firebase olmadan
+`assets/firebase-config.js`-də `projectId` boş qalsa, sayt `assets/data.js`-dəki məzmunla işləyir,
+panel isə demo rejimində açılır (dəyişikliklər yalnız həmin brauzerdə saxlanılır).

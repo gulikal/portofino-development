@@ -21,6 +21,12 @@ window.SITE = {
     ]
   },
 
+  images: {
+    hero: "assets/img/hero.jpg",
+    about: "assets/img/about.jpg",
+    band: "assets/img/band.jpg"
+  },
+
   stats: [
     { value: "15", label: { az: "Bina, Portofino Residence", ru: "Зданий, Portofino Residence", en: "Buildings, Portofino Residence" } },
     { value: "12.8", label: { az: "Hektar ərazi", ru: "Гектаров территории", en: "Hectares of land" } },
