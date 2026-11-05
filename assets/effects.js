@@ -113,13 +113,10 @@
       media.appendChild(shine);
       if (!finePointer || reduce) return;
       card.addEventListener("pointermove", function (e) {
-        var r = card.getBoundingClientRect();
-        var x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
-        card.style.transform = "rotateY(" + ((x - 0.5) * 7).toFixed(2) + "deg) rotateX(" + ((0.5 - y) * 7).toFixed(2) + "deg) translateY(-6px)";
-        media.style.setProperty("--mx", (x * 100).toFixed(1) + "%");
-        media.style.setProperty("--my", (y * 100).toFixed(1) + "%");
+        var r = media.getBoundingClientRect();
+        media.style.setProperty("--mx", ((e.clientX - r.left) / r.width * 100).toFixed(1) + "%");
+        media.style.setProperty("--my", ((e.clientY - r.top) / r.height * 100).toFixed(1) + "%");
       });
-      card.addEventListener("pointerleave", function () { card.style.transform = ""; });
     });
   }
   setupCards();
@@ -215,7 +212,55 @@
     });
   });
 
-  /* 8. Dil dəyişəndə yumşaq keçid */
+  /* 8. Şirkət saytına keçid: sakit pərdə */
+  var leave = document.createElement("div");
+  leave.className = "leave";
+  leave.setAttribute("aria-hidden", "true");
+  leave.innerHTML = "<small></small><b></b><span class=\"bar\"></span>";
+  document.body.appendChild(leave);
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest("a.card");
+    if (!a || reduce || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+    var href = a.getAttribute("href");
+    if (!href || href.charAt(0) === "#") return;
+    e.preventDefault();
+    leave.querySelector("small").textContent = t("ui.leaving");
+    leave.querySelector("b").textContent = a.querySelector("h3").textContent;
+    leave.classList.add("is-on");
+    setTimeout(function () { window.location.href = href; }, 750);
+  });
+  // geri düyməsi ilə qayıdanda pərdə açıq qalmasın
+  window.addEventListener("pageshow", function () { leave.classList.remove("is-on"); });
+
+  /* 9. Scroll ilə yüksələn bina */
+  var rise = document.getElementById("rise");
+  var building = document.getElementById("riseBuilding");
+  var riseBar = document.getElementById("riseBar");
+  var steps = rise ? rise.querySelectorAll(".rise-steps li") : [];
+  function ease(x) { return x < 0 ? 0 : x > 1 ? 1 : 1 - Math.pow(1 - x, 3); }
+  function onRise() {
+    if (!rise || !building) return;
+    if (reduce) { steps.forEach(function (s) { s.classList.add("is-on"); }); return; }
+    var r = rise.getBoundingClientRect();
+    var total = r.height - window.innerHeight;
+    var p = Math.min(1, Math.max(0, -r.top / total));
+    var g = ease(p / 0.62);                 // 0 → 62%: bina yüksəlir
+    var out = Math.min(1, Math.max(0, (p - 0.8) / 0.2)); // 80 → 100%: bina yox olur
+    var hidden = (1 - g) * 100;            // yuxarıdan nə qədər gizlidir
+    building.style.clipPath = "inset(" + hidden.toFixed(2) + "% 0 0 0)";
+    building.style.transform = "translateY(" + ((1 - g) * 14 - out * 6).toFixed(2) + "%) scale(" + (1 - out * 0.06).toFixed(3) + ")";
+    building.style.opacity = (1 - out).toFixed(3);
+    building.style.setProperty("--edge", hidden.toFixed(2) + "%");
+    building.style.setProperty("--edge-o", (g > 0.01 && g < 0.99 ? 1 : 0));
+    if (riseBar) riseBar.style.transform = "scaleX(" + Math.min(1, p / 0.8).toFixed(3) + ")";
+    var idx = p < 0.08 ? -1 : p < 0.3 ? 0 : p < 0.62 ? 1 : 2;
+    steps.forEach(function (s, i) { s.classList.toggle("is-on", i <= idx); });
+  }
+  window.addEventListener("scroll", function () { requestAnimationFrame(onRise); }, { passive: true });
+  window.addEventListener("resize", onRise);
+  onRise();
+
+  /* 10. Dil dəyişəndə yumşaq keçid */
   document.querySelectorAll(".lang button").forEach(function (b) {
     b.addEventListener("click", function () {
       if (reduce) return;

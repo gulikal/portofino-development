@@ -1,3 +1,8 @@
+/* Brendbuk şrifti Gelion: fayllar assets/fonts/ qovluğuna qoyulanda avtomatik işləyir.
+   Fayl yoxdursa, kompüterdə quraşdırılmış Gelion, sonra Gurmukhi MN, sonra Manrope istifadə olunur. */
+@font-face { font-family: "Gelion"; src: local("Gelion Medium"), local("Gelion-Medium"), url("fonts/Gelion-Medium.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Gelion"; src: local("Gelion SemiBold"), local("Gelion-SemiBold"), url("fonts/Gelion-SemiBold.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+
 /* Portofino Development — korporativ one-page
    Şablon: klassik lüks. Şəkilli tam ekran hero, qum rəngli və tünd yaşıl bölmələr
    növbələnir, serif başlıqlar (kursiv vurğu), düz künclər, qızılı detallar. */
@@ -15,6 +20,7 @@
   --line: rgba(10, 67, 60, 0.12);
   --line-light: rgba(255, 255, 255, 0.14);
   --serif: "Playfair Display", Georgia, "Times New Roman", serif;
+  --brand: "Gelion", "Gurmukhi MN", "Manrope", "Segoe UI", Arial, sans-serif; /* brendbuk şrifti */
   --sans: "Inter", "Segoe UI", Arial, sans-serif;
   --max: 1200px;
   color-scheme: light;
@@ -278,11 +284,12 @@ a.card:hover .card-media .media { transform: scale(1.05); }
 }
 .soon-hex { width: 76px; height: 76px; margin-bottom: 22px; }
 .soon-hex path { fill: none; stroke: var(--gold); stroke-width: 1.5; stroke-dasharray: 280; stroke-dashoffset: 280; animation: soon-draw 3.2s ease-in-out infinite alternate; }
-.soon-kicker { font: 500 10.5px var(--sans); letter-spacing: 0.4em; text-transform: uppercase; color: rgba(255, 255, 255, 0.7); }
+.soon-kicker { font: 500 10.5px var(--brand); letter-spacing: 0.4em; text-transform: uppercase; color: rgba(255, 255, 255, 0.7); }
 .soon-title {
   display: block;
   margin-top: 10px;
-  font: italic 400 clamp(38px, 4vw, 50px)/1.05 var(--serif);
+  font: 600 clamp(34px, 3.6vw, 44px)/1.05 var(--brand);
+  letter-spacing: 0.02em;
   background: linear-gradient(100deg, #C99B55 0%, #F6DDA8 40%, #FFF4DC 50%, #F6DDA8 60%, #C99B55 100%);
   background-size: 250% 100%;
   -webkit-background-clip: text;
@@ -290,7 +297,7 @@ a.card:hover .card-media .media { transform: scale(1.05); }
   color: transparent;
   animation: soon-shine 4.5s ease-in-out infinite;
 }
-.soon-line { display: flex; align-items: center; gap: 12px; margin-top: 16px; font: 500 11px var(--sans); letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); }
+.soon-line { display: flex; align-items: center; gap: 12px; margin-top: 16px; font: 500 11px var(--brand); letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); }
 .soon-line::before, .soon-line::after { content: ""; width: 26px; height: 1px; background: currentColor; opacity: 0.7; }
 .card.is-soon .card-tag, .card.is-soon .card-cap { z-index: 5; }
 .card.is-soon .card-cap { display: none; }
@@ -443,8 +450,10 @@ html { scroll-padding-top: 80px; }
 .btn-line:hover { background-color: transparent; background-size: 100% 100%; }
 
 /* Kartlar: 3D əyilmə və işıq parıltısı */
-.cards { perspective: 1200px; }
-.card { transform-style: preserve-3d; transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.1, 1); will-change: transform; }
+.card { transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.1, 1); }
+a.card:hover { transform: translateY(-6px); }
+.card-media { transition: box-shadow 0.6s ease; }
+a.card:hover .card-media { box-shadow: 0 34px 60px rgba(10, 67, 60, 0.22); }
 .card-media .shine { position: absolute; inset: 0; z-index: 3; pointer-events: none; opacity: 0; transition: opacity 0.4s ease; background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255, 236, 200, 0.28), transparent 45%); }
 .card:hover .card-media .shine { opacity: 1; }
 a.card:hover .card-cap h3 { color: var(--gold); }
@@ -511,3 +520,55 @@ body.menu-open .site-header { background: transparent; box-shadow: none; color: 
   .reveal, .curtain.reveal { opacity: 1; transform: none; clip-path: none; transition: none; }
   .card { transition: none; }
 }
+
+
+/* ---------- Scroll ilə yüksələn bina ---------- */
+.rise { position: relative; height: 280vh; background: #062C27; color: #fff; }
+.rise-sticky { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; background: radial-gradient(ellipse 70% 60% at 70% 60%, #0F5249 0%, #062C27 70%); }
+.rise-grid { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(226, 183, 118, 0.07) 0 1px, transparent 1px 64px); mask-image: linear-gradient(90deg, transparent, #000 30%, #000 70%, transparent); -webkit-mask-image: linear-gradient(90deg, transparent, #000 30%, #000 70%, transparent); }
+.rise-inner { position: relative; height: 100%; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 40px; align-items: center; }
+.rise-copy { position: relative; z-index: 2; }
+.rise .eyebrow { color: rgba(255, 255, 255, 0.5); }
+.rise h2 { color: #fff; font-size: clamp(38px, 4.8vw, 64px); line-height: 1.1; }
+.rise h2 em { display: block; color: var(--gold); }
+.rise-text { margin-top: 22px; color: rgba(255, 255, 255, 0.68); font-weight: 300; max-width: 30em; }
+.rise-steps { list-style: none; margin: 36px 0 0; padding: 0; display: grid; gap: 4px; }
+.rise-steps li { display: flex; align-items: baseline; gap: 16px; padding: 10px 0; font: 400 22px var(--serif); color: rgba(255, 255, 255, 0.3); transition: color 0.5s ease, transform 0.5s ease; }
+.rise-steps li i { font: 500 11px var(--sans); letter-spacing: 0.2em; font-style: normal; }
+.rise-steps li.is-on { color: #fff; transform: translateX(8px); }
+.rise-steps li.is-on i { color: var(--gold); }
+.rise-bar { margin-top: 18px; height: 1px; max-width: 320px; background: rgba(255, 255, 255, 0.15); }
+.rise-bar span { display: block; height: 100%; background: var(--gold-grad); transform: scaleX(0); transform-origin: 0 50%; }
+.rise-stage { position: relative; height: 100%; display: flex; align-items: flex-end; justify-content: center; }
+.rise-building { position: relative; width: min(100%, 640px); margin-bottom: 0; will-change: transform, clip-path, opacity; }
+.rise-building img { display: block; width: 100%; height: auto; max-height: 92vh; object-fit: contain; object-position: bottom; filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.35)); }
+.rise-edge { position: absolute; left: 6%; right: 6%; height: 2px; top: var(--edge, 100%); background: linear-gradient(90deg, transparent, #F6DDA8, transparent); box-shadow: 0 0 18px 2px rgba(226, 183, 118, 0.6); opacity: var(--edge-o, 0); }
+.rise-ground { position: absolute; left: -10%; right: -10%; bottom: 0; height: 18%; background: linear-gradient(180deg, transparent, #062C27 85%); pointer-events: none; }
+.rise .render-note { bottom: 20px; }
+
+@media (max-width: 900px) {
+  .rise { height: 240vh; }
+  .rise-inner { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 1fr; gap: 0; padding-block: calc(96px + env(safe-area-inset-top, 0px)) 0; }
+  .rise h2 { font-size: clamp(32px, 8vw, 44px); }
+  .rise-text { display: none; }
+  .rise-steps { margin-top: 18px; grid-auto-flow: column; justify-content: start; gap: 18px; }
+  .rise-steps li { font-size: 16px; padding: 4px 0; gap: 8px; }
+  .rise-steps li.is-on { transform: none; }
+  .rise-bar { display: none; }
+  .rise-building { width: min(100%, 460px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rise { height: auto; }
+  .rise-sticky { position: relative; height: auto; padding-block: 96px 0; }
+  .rise-inner { height: auto; }
+  .rise-steps li { color: #fff; }
+}
+
+/* ---------- Keçid pərdəsi (şirkət saytına gedəndə) ---------- */
+.leave { position: fixed; inset: 0; z-index: 120; display: grid; place-items: center; align-content: center; gap: 14px; background: #062C27; color: #fff; text-align: center; opacity: 0; pointer-events: none; transition: opacity 0.45s ease; }
+.leave.is-on { opacity: 1; pointer-events: auto; }
+.leave small { font: 500 10.5px var(--sans); letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); }
+.leave b { font: 400 clamp(30px, 4vw, 46px) var(--serif); font-weight: 400; }
+.leave .bar { width: 120px; height: 1px; background: rgba(255, 255, 255, 0.15); overflow: hidden; margin: 6px auto 0; }
+.leave .bar::after { content: ""; display: block; height: 100%; background: var(--gold-grad); transform: scaleX(0); transform-origin: 0 50%; transition: transform 0.6s ease; }
+.leave.is-on .bar::after { transform: scaleX(1); }
