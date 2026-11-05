@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="az">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Portofino Development — Şirkətlər qrupu</title>
+  <meta name="description" content="Portofino Development tikinti və daşınmaz əmlak sahəsində fəaliyyət göstərən şirkətlər qrupudur.">
+  <meta name="theme-color" content="#07302B">
+  <link rel="canonical" href="https://DOMEN.az/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Portofino Development">
+  <meta property="og:description" content="Daşınmaz əmlak və tikinti sahəsində şirkətlər qrupu.">
+  <meta property="og:url" content="https://DOMEN.az/">
+  <meta property="og:image" content="https://DOMEN.az/assets/og-image.jpg">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="assets/styles.css">
+
+  <!-- ANALİTİKA: Google Analytics / Meta Pixel kodunu bura əlavə edin -->
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="wordmark" href="#top" aria-label="Portofino Development">
+        <!-- Rəsmi loqo gələndə: <img src="assets/logos/portofino-development.svg" alt="Portofino Development"> -->
+        <span class="wordmark-name">PORTOFINO</span>
+        <span class="wordmark-sub">DEVELOPMENT</span>
+      </a>
+      <nav class="nav" aria-label="Əsas naviqasiya">
+        <ul class="nav-links">
+          <li><a href="#about" data-i18n="nav.about">Haqqımızda</a></li>
+          <li><a href="#companies" data-i18n="nav.companies">Şirkətlər</a></li>
+          <li><a href="#contact" data-i18n="nav.contact">Əlaqə</a></li>
+        </ul>
+        <div class="lang" role="group" aria-label="Dil">
+          <button type="button" data-lang="az" aria-pressed="true">AZ</button>
+          <button type="button" data-lang="ru" aria-pressed="false">RU</button>
+          <button type="button" data-lang="en" aria-pressed="false">EN</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap">
+        <div>
+          <p class="eyebrow" data-i18n="hero.eyebrow">Şirkətlər qrupu</p>
+          <h1 data-i18n="hero.title">Etibarlı tikinti, davamlı dəyər</h1>
+        </div>
+        <p class="hero-lead" data-i18n="hero.lead"></p>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow" data-i18n="about.eyebrow">Haqqımızda</p>
+            <h2 data-i18n="about.title">Bir qrup, ortaq standart</h2>
+          </div>
+          <div class="about-text">
+            <p data-i18n="about.p1"></p>
+            <p data-i18n="about.p2"></p>
+          </div>
+        </div>
+        <div class="pillars">
+          <div class="pillar"><h3 data-i18n="pillar1.title"></h3><p data-i18n="pillar1.text"></p></div>
+          <div class="pillar"><h3 data-i18n="pillar2.title"></h3><p data-i18n="pillar2.text"></p></div>
+          <div class="pillar"><h3 data-i18n="pillar3.title"></h3><p data-i18n="pillar3.text"></p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section companies" id="companies">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow" data-i18n="companies.eyebrow">Şirkətlərimiz</p>
+            <h2 data-i18n="companies.title">Qrupa daxil olan şirkətlər</h2>
+          </div>
+          <div class="about-text"><p data-i18n="companies.lead"></p></div>
+        </div>
+        <div class="cards" id="cards"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="contact">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <span class="wordmark" aria-hidden="true">
+            <span class="wordmark-name">PORTOFINO</span>
+            <span class="wordmark-sub">DEVELOPMENT</span>
+          </span>
+          <p class="footer-note" data-i18n="footer.note"></p>
+        </div>
+        <div>
+          <h4 data-i18n="footer.contact">Əlaqə</h4>
+          <ul>
+            <li id="c-address"></li>
+            <li><a id="c-phone" href="#"></a></li>
+            <li><a id="c-email" href="#"></a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 data-i18n="footer.companies">Şirkətlər</h4>
+          <ul id="footer-companies"></ul>
+        </div>
+        <div>
+          <h4 data-i18n="footer.social">Sosial şəbəkələr</h4>
+          <ul id="c-social"></ul>
+        </div>
+      </div>
+      <p class="copyright">© <span id="year"></span> Portofino Development. <span data-i18n="footer.rights"></span></p>
+    </div>
+  </footer>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/main.js"></script>
+</body>
+</html>
