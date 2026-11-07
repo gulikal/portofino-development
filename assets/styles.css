@@ -193,6 +193,9 @@ em { font-style: italic; }
 .hm-sub b { font-weight: 500; }
 .hm-sub i { display: block; height: 1px; width: clamp(36px, 7vw, 110px); background: linear-gradient(90deg, transparent, var(--gold)); }
 .hm-sub i:last-child { background: linear-gradient(90deg, var(--gold), transparent); margin-left: -0.62em; }
+/* "Şirkətlər qrupu": qutusuz, incə kursiv serif, iki kiçik qızılı romb arasında */
+.hero-group { display: inline-flex; align-items: center; gap: 14px; margin: 4px 0 0; font: italic 400 clamp(17px, 1.7vw, 22px)/1.2 var(--serif); letter-spacing: 0.04em; color: rgba(255, 255, 255, 0.9); text-shadow: 0 2px 20px rgba(0, 0, 0, 0.4); }
+.hero-group i { width: 6px; height: 6px; background: var(--gold); transform: rotate(45deg); flex: none; }
 .hero-tag { margin: 30px 0 22px; color: #fff; font: 400 clamp(26px, 3.4vw, 46px)/1.2 var(--serif); text-shadow: 0 2px 30px rgba(0, 0, 0, 0.35); }
 .hero-tag em { color: var(--gold); }
 .hero-lead { color: rgba(255, 255, 255, 0.82); font-size: clamp(16px, 1.6vw, 19px); font-weight: 300; letter-spacing: 0.02em; max-width: 40em; margin: 0 auto 44px; }
@@ -449,12 +452,12 @@ html { scroll-padding-top: 80px; }
 .js-anim .hm-sub i:first-child { transform-origin: 100% 50%; }
 .js-anim .hm-sub i:last-child { transform-origin: 0 50%; }
 .is-loaded .hm-sub i { transform: none; }
-.js-anim .hero .gold-badge, .js-anim .hero-lead, .js-anim .hero-actions { opacity: 0; transform: translateY(18px); transition: opacity 0.9s ease, transform 0.9s ease; }
-.js-anim .hero .gold-badge { transition-delay: 0.75s; }
+.js-anim .hero-group, .js-anim .hero-lead, .js-anim .hero-actions { opacity: 0; transform: translateY(18px); transition: opacity 0.9s ease, transform 0.9s ease; }
+.js-anim .hero-group { transition-delay: 0.75s; }
 .js-anim .hero-lead { transition-delay: 1.1s; }
 .js-anim .hero-actions { transition-delay: 1.25s; }
 .is-loaded .hero-tag .line-in { transform: none; }
-.is-loaded .hero .gold-badge, .is-loaded .hero-lead, .is-loaded .hero-actions { opacity: 1; transform: none; }
+.is-loaded .hero-group, .is-loaded .hero-lead, .is-loaded .hero-actions { opacity: 1; transform: none; }
 
 /* Bölmələr görünəndə yumşaq açılır */
 .reveal { opacity: 0; transform: translateY(34px); transition: opacity 1s ease, transform 1s cubic-bezier(0.2, 0.7, 0.1, 1); transition-delay: var(--d, 0s); }
@@ -596,3 +599,8 @@ body.menu-open .site-header { background: transparent; box-shadow: none; color: 
 .leave .bar { width: 120px; height: 1px; background: rgba(255, 255, 255, 0.15); overflow: hidden; margin: 6px auto 0; }
 .leave .bar::after { content: ""; display: block; height: 100%; background: var(--gold-grad); transform: scaleX(0); transform-origin: 0 50%; transition: transform 0.6s ease; }
 .leave.is-on .bar::after { transform: scaleX(1); }
+
+@media (max-width: 600px) {
+  .hero-tag { font-size: clamp(24px, 7vw, 30px); margin-top: 24px; }
+  .hero-tag .line { display: block; }
+}
