@@ -17,7 +17,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Urbanist:wght@300;400;500;600&display=swap">
-  <link rel="stylesheet" href="assets/styles.css?v=202611082346">
+  <link rel="stylesheet" href="assets/styles.css?v=202611090019">
 
   <!-- ANALİTİKA: Google Analytics / Meta Pixel kodunu bura əlavə edin -->
 </head>
@@ -101,7 +101,7 @@
             <li><small data-i18n="contact.address">Ünvan</small><span id="c-address"></span></li>
           </ul>
         </div>
-        <form class="lead-form" id="leadForm" novalidate>
+        <form class="lead-form" id="leadForm" method="post" action="#contact" onsubmit="return false" novalidate>
           <div class="f-row">
             <label class="field"><span data-i18n="form.name">Ad</span><input id="f-name" name="name" type="text" autocomplete="given-name" maxlength="60" required></label>
             <label class="field"><span data-i18n="form.surname">Soyad</span><input id="f-surname" name="surname" type="text" autocomplete="family-name" maxlength="60" required></label>
@@ -131,8 +131,12 @@
     </div>
   </footer>
 
-  <script src="assets/data.js?v=202611082346"></script>
-  <script src="assets/firebase-config.js?v=202611082346"></script>
-  <script src="assets/main.js?v=202611082346"></script>
+  <script src="assets/data.js?v=202611090019"></script>
+  <script>
+    // GitHub bəzən faylı müvəqqəti verməyə bilər: data.js yüklənməyibsə, yenidən yüklə
+    if (!window.SITE) document.write('<script src="assets/data.js?retry=' + Date.now() + '"><\/script>');
+  </script>
+  <script src="assets/firebase-config.js?v=202611090019"></script>
+  <script src="assets/main.js?v=202611090019"></script>
 </body>
 </html>

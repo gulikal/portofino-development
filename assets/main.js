@@ -3,6 +3,7 @@
    Müraciətlər Firestore-un "requests" kolleksiyasına yazılır və paneldə görünür. */
 (function () {
   "use strict";
+  if (!window.SITE) { setTimeout(function () { location.reload(); }, 1500); return; } // data.js yüklənməyib
   var SITE = window.SITE;
   var DEFAULTS = JSON.parse(JSON.stringify(window.SITE));
   var LANGS = ["az", "ru", "en"];
