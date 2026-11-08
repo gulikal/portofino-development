@@ -16,8 +16,8 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap">
-  <link rel="stylesheet" href="assets/styles.css?v=202611082325">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Urbanist:wght@300;400;500;600&display=swap">
+  <link rel="stylesheet" href="assets/styles.css?v=202611082346">
 
   <!-- ANALİTİKA: Google Analytics / Meta Pixel kodunu bura əlavə edin -->
 </head>
@@ -26,7 +26,7 @@
   <header class="site-header" id="header">
     <div class="wrap">
       <a class="logo" href="#top" aria-label="Portofino Development">
-        <!-- Rəsmi loqo gələndə: <img src="assets/logos/portofino-development.svg" alt="Portofino Development" height="38"> -->
+        <!-- Rəsmi Portofino Development loqosu gələndə bu bloku <img> ilə əvəz edin -->
         <svg class="logo-hex" viewBox="0 0 100 100" aria-hidden="true"><path d="M27 6h46l23 44-23 44H27L4 50 27 6Z"/></svg>
         <span class="logo-text"><b>PORTOFINO</b><small>DEVELOPMENT</small></span>
       </a>
@@ -51,22 +51,23 @@
     <section class="hero">
       <div class="hero-bg" data-imgkey="hero" data-img="assets/img/hero.jpg" role="img" aria-label="Portofino layihəsi"></div>
       <div class="wrap hero-in">
-        <p class="hero-eyebrow"><i aria-hidden="true"></i><span data-i18n="hero.eyebrow">Şirkətlər qrupu</span></p>
-        <h1>Portofino <span>Development</span></h1>
+        <p class="hero-eyebrow"><i aria-hidden="true"></i><span data-i18n="hero.eyebrow">Şirkətlər qrupu</span><i aria-hidden="true"></i></p>
+        <h1 class="hero-title"><span class="ht-1">Portofino</span><span class="ht-2">Development</span></h1>
         <p class="hero-lead" data-i18n="hero.lead"></p>
         <div class="hero-actions">
-          <a class="btn" href="#companies" data-i18n="hero.btn1">Şirkətlərimiz</a>
-          <a class="btn-ghost" href="#contact" data-i18n="nav.contact">Əlaqə</a>
+          <a class="btn btn-gold" href="#companies" data-i18n="hero.btn1">Şirkətlərimiz</a>
+          <a class="btn btn-line" href="#contact" data-i18n="form.submit">Müraciət göndər</a>
         </div>
       </div>
+      <a class="hero-scroll" href="#about" aria-label="Aşağı"><span></span></a>
     </section>
 
     <!-- HAQQIMIZDA -->
     <section class="section about" id="about">
       <div class="wrap about-grid">
-        <div>
+        <div class="about-text">
           <p class="eyebrow" data-i18n="about.eyebrow">Haqqımızda</p>
-          <h2><span data-i18n="about.t1">Bir qrup.</span> <span data-i18n="about.t2">Ortaq standart.</span></h2>
+          <h2><span data-i18n="about.t1">Bir qrup.</span> <em data-i18n="about.t2">Ortaq standart.</em></h2>
           <p data-i18n="about.p1"></p>
           <p data-i18n="about.p2"></p>
           <div class="stats" id="stats"></div>
@@ -81,21 +82,38 @@
         <div class="sec-head">
           <p class="eyebrow" data-i18n="companies.eyebrow">Şirkətlərimiz</p>
           <h2 data-i18n="companies.title">Qrupa daxil olan şirkətlər</h2>
+          <p class="sec-lead" data-i18n="companies.lead"></p>
         </div>
         <div class="cards" id="cards"></div>
       </div>
     </section>
 
-    <!-- ƏLAQƏ -->
-    <section class="contact" id="contact">
-      <div class="wrap">
-        <p class="eyebrow" data-i18n="contact.eyebrow">Əlaqə</p>
-        <p class="contact-note" data-i18n="contact.text"></p>
-        <a class="contact-phone" id="c-phone" href="#"></a>
-        <div class="contact-meta">
-          <a id="c-email" href="#"></a>
-          <span id="c-address"></span>
+    <!-- MÜRACİƏT FORMU VƏ ƏLAQƏ -->
+    <section class="section contact" id="contact">
+      <div class="wrap contact-grid">
+        <div class="contact-info">
+          <p class="eyebrow" data-i18n="form.eyebrow">Müraciət</p>
+          <h2 data-i18n="form.title">Bizimlə əlaqə saxlayın</h2>
+          <p class="contact-text" data-i18n="form.text"></p>
+          <ul class="contact-list">
+            <li><small data-i18n="contact.phone">Telefon</small><a id="c-phone" href="#"></a></li>
+            <li><small data-i18n="contact.email">E-poçt</small><a id="c-email" href="#"></a></li>
+            <li><small data-i18n="contact.address">Ünvan</small><span id="c-address"></span></li>
+          </ul>
         </div>
+        <form class="lead-form" id="leadForm" novalidate>
+          <div class="f-row">
+            <label class="field"><span data-i18n="form.name">Ad</span><input id="f-name" name="name" type="text" autocomplete="given-name" maxlength="60" required></label>
+            <label class="field"><span data-i18n="form.surname">Soyad</span><input id="f-surname" name="surname" type="text" autocomplete="family-name" maxlength="60" required></label>
+          </div>
+          <label class="field"><span data-i18n="form.phone">Telefon nömrəsi</span><input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+994" maxlength="25" required></label>
+          <label class="field"><span data-i18n="form.email">E-poçt</span><input id="f-email" name="email" type="email" autocomplete="email" maxlength="100" required></label>
+          <!-- spam qoruması: insanlar bu xananı görmür -->
+          <input class="hp" id="f-company" name="company" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <button class="btn btn-gold btn-submit" type="submit" id="f-submit"><span data-i18n="form.submit">Müraciət göndər</span></button>
+          <p class="f-consent" data-i18n="form.consent"></p>
+          <p class="f-msg" id="f-msg" role="status" aria-live="polite"></p>
+        </form>
       </div>
     </section>
   </main>
@@ -108,13 +126,13 @@
         <a href="#companies" data-i18n="nav.companies">Şirkətlər</a>
         <a href="#contact" data-i18n="nav.contact">Əlaqə</a>
       </nav>
-      <p class="copyright">© <span id="year"></span> Portofino Development. <span data-i18n="footer.rights"></span></p>
       <ul class="socials" id="c-social"></ul>
+      <p class="copyright">© <span id="year"></span> Portofino Development. <span data-i18n="footer.rights"></span></p>
     </div>
   </footer>
 
-  <script src="assets/data.js?v=202611082325"></script>
-  <script src="assets/firebase-config.js?v=202611082325"></script>
-  <script src="assets/main.js?v=202611082325"></script>
+  <script src="assets/data.js?v=202611082346"></script>
+  <script src="assets/firebase-config.js?v=202611082346"></script>
+  <script src="assets/main.js?v=202611082346"></script>
 </body>
 </html>

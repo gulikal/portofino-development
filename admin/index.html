@@ -135,6 +135,25 @@ textarea { resize: vertical; min-height: 64px; }
 
 .confirm-bar { display: flex; gap: 8px; align-items: center; font-size: 13px; color: var(--err); }
 
+
+.nav .badge { margin-left: auto; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 10px; background: var(--gold); color: var(--deep); font: 700 11px/20px var(--sans); text-align: center; font-style: normal; }
+.req-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.req-filter { display: inline-flex; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.req-filter button { border: 0; background: #fff; padding: 7px 14px; cursor: pointer; font-weight: 600; font-size: 12.5px; color: var(--soft); }
+.req-filter button[aria-pressed="true"] { background: var(--green); color: #fff; }
+.req-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.req-wrap { overflow-x: auto; }
+.req-table th { text-align: left; font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--soft); padding: 10px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.req-table td { padding: 12px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+.req-table tr.new td:first-child { box-shadow: inset 3px 0 0 var(--gold); }
+.req-table tr.new .req-name { font-weight: 700; }
+.req-table a { color: var(--green); }
+.req-date { color: var(--soft); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.req-st { display: inline-block; padding: 2px 9px; border-radius: 99px; font-size: 11px; font-weight: 600; }
+.req-st.new { background: #FFF3DC; color: var(--warn); }
+.req-st.done { background: #E6F4EC; color: var(--ok); }
+.req-actions { display: flex; gap: 6px; justify-content: flex-end; }
+.empty { padding: 40px 10px; text-align: center; color: var(--soft); }
 @media (max-width: 860px) {
   .app { grid-template-columns: minmax(0,1fr); }
   .side { position: static; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; padding: 14px; gap: 12px; }
@@ -175,7 +194,8 @@ textarea { resize: vertical; min-height: 64px; }
   <aside class="side">
     <div class="mark"><b>PORTOFINO</b><small>İdarəetmə</small></div>
     <nav class="nav" aria-label="Bölmələr">
-      <button type="button" data-tab="companies" aria-current="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg><span>Şirkətlər</span></button>
+      <button type="button" data-tab="requests" aria-current="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h16v12H8l-4 4V4Z"/><path d="M8 9h8M8 12h5"/></svg><span>Müraciətlər</span><em class="badge" id="reqBadge" hidden></em></button>
+      <button type="button" data-tab="companies"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg><span>Şirkətlər</span></button>
       <button type="button" data-tab="texts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6h16M4 12h16M4 18h10"/></svg><span>Mətnlər</span></button>
       <button type="button" data-tab="images"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></svg><span>Şəkillər</span></button>
       <button type="button" data-tab="stats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Rəqəmlər</span></button>
@@ -214,8 +234,8 @@ textarea { resize: vertical; min-height: 64px; }
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="../assets/data.js?v=202611082325"></script>
-<script src="../assets/firebase-config.js?v=202611082325"></script>
+<script src="../assets/data.js?v=202611082346"></script>
+<script src="../assets/firebase-config.js?v=202611082346"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -230,7 +250,7 @@ textarea { resize: vertical; min-height: 64px; }
   var db, auth;
   var state = null;          // panelin işlədiyi məzmun
   var dirty = false;
-  var tab = "companies";
+  var tab = "requests";
   var editLang = "az";
 
   var $ = function (id) { return document.getElementById(id); };
@@ -358,7 +378,7 @@ textarea { resize: vertical; min-height: 64px; }
   function siteUrl(u) { if (!u) return ""; return /^(https?:|data:)/.test(u) ? u : "../" + u; }
 
   /* ---------- Bölmələr ---------- */
-  var TITLES = { companies: "Şirkətlər", texts: "Mətnlər", images: "Şəkillər", stats: "Rəqəmlər", contact: "Əlaqə" };
+  var TITLES = { requests: "Müraciətlər", companies: "Şirkətlər", texts: "Mətnlər", images: "Şəkillər", stats: "Rəqəmlər", contact: "Əlaqə" };
   document.querySelectorAll(".nav button").forEach(function (b) {
     b.addEventListener("click", function () { tab = b.getAttribute("data-tab"); render(); });
   });
@@ -375,13 +395,107 @@ textarea { resize: vertical; min-height: 64px; }
   function render() {
     document.querySelectorAll(".nav button").forEach(function (b) { b.setAttribute("aria-current", String(b.getAttribute("data-tab") === tab)); });
     $("tabTitle").textContent = TITLES[tab];
+    $("saveBtn").style.visibility = tab === "requests" ? "hidden" : "";
+    $("status").style.visibility = tab === "requests" ? "hidden" : "";
     var c = $("content"); c.innerHTML = "";
     if (demo) {
       var d = document.createElement("div"); d.className = "demo-bar";
       d.innerHTML = "<b>Demo rejimi.</b> Dəyişikliklər yalnız bu brauzerdə saxlanılır və saytı bu brauzerdə açanda görünür. Firebase qoşulandan sonra bütün ziyarətçilər görəcək.";
       c.appendChild(d);
     }
-    ({ companies: renderCompanies, texts: renderTexts, images: renderImages, stats: renderStats, contact: renderContact })[tab](c);
+    ({ requests: renderRequests, companies: renderCompanies, texts: renderTexts, images: renderImages, stats: renderStats, contact: renderContact })[tab](c);
+  }
+
+
+  /* ---------- Müraciətlər (saytdakı formadan) ---------- */
+  var reqFilter = "all", reqCache = null;
+  function fmtDate(d) {
+    try { return new Date(d).toLocaleString("az-AZ", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" }); } catch (e) { return d; }
+  }
+  function loadRequests() {
+    if (demo) {
+      var arr = [];
+      try { arr = JSON.parse(localStorage.getItem("pd-demo-requests") || "[]"); } catch (e) { /* ignore */ }
+      return Promise.resolve(arr.map(function (r, i) { return Object.assign({ id: "demo" + i }, r); }));
+    }
+    return db.collection("requests").orderBy("createdAt", "desc").limit(500).get().then(function (qs) {
+      return qs.docs.map(function (d) {
+        var x = d.data(); var ts = x.createdAt && x.createdAt.toDate ? x.createdAt.toDate().toISOString() : x.createdAt;
+        return Object.assign({}, x, { id: d.id, createdAt: ts });
+      });
+    });
+  }
+  function setReqStatus(r, status) {
+    if (demo) {
+      var arr = JSON.parse(localStorage.getItem("pd-demo-requests") || "[]"); var i = +r.id.replace("demo", "");
+      if (arr[i]) arr[i].status = status; localStorage.setItem("pd-demo-requests", JSON.stringify(arr)); return Promise.resolve();
+    }
+    return db.collection("requests").doc(r.id).update({ status: status });
+  }
+  function deleteReq(r) {
+    if (demo) {
+      var arr = JSON.parse(localStorage.getItem("pd-demo-requests") || "[]"); arr.splice(+r.id.replace("demo", ""), 1);
+      localStorage.setItem("pd-demo-requests", JSON.stringify(arr)); return Promise.resolve();
+    }
+    return db.collection("requests").doc(r.id).delete();
+  }
+  function updateBadge(list) {
+    var n = list.filter(function (r) { return r.status !== "done"; }).length;
+    var b = $("reqBadge"); b.hidden = !n; b.textContent = n;
+  }
+  function exportCsv(list) {
+    var rows = [["Tarix", "Ad", "Soyad", "Telefon", "E-poçt", "Dil", "Status"]].concat(list.map(function (r) {
+      return [fmtDate(r.createdAt), r.name, r.surname, r.phone, r.email, (r.lang || "").toUpperCase(), r.status === "done" ? "Baxılıb" : "Yeni"];
+    }));
+    var csv = "\ufeff" + rows.map(function (row) { return row.map(function (v) { return '"' + String(v == null ? "" : v).replace(/"/g, '""') + '"'; }).join(";"); }).join("\n");
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
+    a.download = "portofino-muracietler.csv"; document.body.appendChild(a); a.click(); a.remove();
+  }
+  function renderRequests(c) {
+    var card = document.createElement("div"); card.className = "card";
+    card.innerHTML = '<h3>Saytdan gələn müraciətlər</h3><p class="hint">Saytın “Müraciət göndər” formasından göndərilən bütün sorğular. Əlaqə saxladıqdan sonra “Baxıldı” kimi qeyd edin.</p>' +
+      '<div class="req-tools"><div class="req-filter" role="group" aria-label="Filtr"><button type="button" data-f="all">Hamısı</button><button type="button" data-f="new">Yeni</button><button type="button" data-f="done">Baxılıb</button></div>' +
+      '<div style="display:flex;gap:8px"><button class="btn btn-sm" type="button" id="reqReload">Yenilə</button><button class="btn btn-sm" type="button" id="reqCsv">Excel üçün yüklə (CSV)</button></div></div>' +
+      '<div class="req-wrap" id="reqBox"><div class="empty">Yüklənir…</div></div>';
+    c.appendChild(card);
+    card.querySelectorAll("[data-f]").forEach(function (b) {
+      b.setAttribute("aria-pressed", String(b.getAttribute("data-f") === reqFilter));
+      b.addEventListener("click", function () { reqFilter = b.getAttribute("data-f"); render(); });
+    });
+    card.querySelector("#reqReload").addEventListener("click", function () { reqCache = null; render(); });
+    function draw(list) {
+      updateBadge(list);
+      card.querySelector("#reqCsv").onclick = function () { exportCsv(list); };
+      var shown = list.filter(function (r) { return reqFilter === "all" || (reqFilter === "done" ? r.status === "done" : r.status !== "done"); });
+      var box = card.querySelector("#reqBox");
+      if (!shown.length) { box.innerHTML = '<div class="empty">' + (list.length ? "Bu filtrdə müraciət yoxdur." : "Hələ müraciət yoxdur. Saytdakı formadan göndərilən sorğular burada görünəcək.") + '</div>'; return; }
+      var t = document.createElement("table"); t.className = "req-table";
+      t.innerHTML = '<thead><tr><th>Tarix</th><th>Ad Soyad</th><th>Telefon</th><th>E-poçt</th><th>Dil</th><th>Status</th><th></th></tr></thead>';
+      var tb = document.createElement("tbody");
+      shown.forEach(function (r) {
+        var tr = document.createElement("tr"); tr.className = r.status === "done" ? "" : "new";
+        var tel = String(r.phone || "").replace(/[^\d+]/g, "");
+        tr.innerHTML = '<td class="req-date">' + esc(fmtDate(r.createdAt)) + '</td><td class="req-name">' + esc(r.name) + ' ' + esc(r.surname) + '</td>' +
+          '<td><a href="tel:' + esc(tel) + '">' + esc(r.phone) + '</a></td><td><a href="mailto:' + esc(r.email) + '">' + esc(r.email) + '</a></td>' +
+          '<td>' + esc((r.lang || "").toUpperCase()) + '</td><td><span class="req-st ' + (r.status === "done" ? "done" : "new") + '">' + (r.status === "done" ? "Baxılıb" : "Yeni") + '</span></td>' +
+          '<td><div class="req-actions"><button class="btn btn-sm" type="button" data-a="st">' + (r.status === "done" ? "Yeni et" : "Baxıldı") + '</button><button class="btn btn-sm btn-danger" type="button" data-a="del">Sil</button></div></td>';
+        tr.querySelector('[data-a="st"]').addEventListener("click", function () {
+          var ns = r.status === "done" ? "new" : "done";
+          setReqStatus(r, ns).then(function () { r.status = ns; draw(list); }).catch(function (e) { toast("Alınmadı: " + e.message, true); });
+        });
+        var delBtn = tr.querySelector('[data-a="del"]');
+        delBtn.addEventListener("click", function () {
+          if (delBtn.dataset.sure) {
+            deleteReq(r).then(function () { list.splice(list.indexOf(r), 1); draw(list); toast("Müraciət silindi."); }).catch(function (e) { toast("Alınmadı: " + e.message, true); });
+          } else { delBtn.dataset.sure = "1"; delBtn.textContent = "Əminsiniz?"; setTimeout(function () { delete delBtn.dataset.sure; delBtn.textContent = "Sil"; }, 3000); }
+        });
+        tb.appendChild(tr);
+      });
+      t.appendChild(tb); box.innerHTML = ""; box.appendChild(t);
+    }
+    (reqCache ? Promise.resolve(reqCache) : loadRequests()).then(function (list) { reqCache = list; draw(list); })
+      .catch(function (e) { card.querySelector("#reqBox").innerHTML = '<div class="empty" style="color:var(--err)">Müraciətləri yükləmək alınmadı: ' + esc(e.message || e) + '</div>'; });
   }
 
   /* Şirkətlər */

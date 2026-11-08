@@ -83,3 +83,13 @@ bölmə şəkilləri, rəqəmlər və əlaqə məlumatları dəyişdirilir. "Yad
 ### Firebase olmadan
 `assets/firebase-config.js`-də `projectId` boş qalsa, sayt `assets/data.js`-dəki məzmunla işləyir,
 panel isə demo rejimində açılır (dəyişikliklər yalnız həmin brauzerdə saxlanılır).
+
+### Müraciət forması
+Saytın "Müraciət göndər" forması (ad, soyad, telefon, e-poçt) Firestore-un `requests` kolleksiyasına yazılır.
+Müraciətlər admin panelin "Müraciətlər" bölməsində görünür: "Baxıldı" kimi qeyd etmək, silmək və CSV (Excel) kimi yükləmək mümkündür.
+Qaydalar: hər kəs yalnız düzgün formatlı yeni müraciət yarada bilər; oxumaq və silmək yalnız admin üçündür.
+
+### Şriftlər
+Brendbuk şriftləri: Gurmukhi MN (əsas) və Gelion (əlavə). Apple cihazlarında Gurmukhi MN avtomatik göstərilir.
+Lisenziyalı veb-şrift faylları alındıqda `assets/fonts/` qovluğuna qoyun (Gelion-Regular.woff2, Gelion-Medium.woff2, Gelion-SemiBold.woff2) — sayt avtomatik istifadə edəcək.
+Fayllar olmadıqda ən yaxın pulsuz analoqlar istifadə olunur: Marcellus və Urbanist.
