@@ -17,7 +17,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap">
-  <link rel="stylesheet" href="assets/styles.css?v=202611082319">
+  <link rel="stylesheet" href="assets/styles.css?v=202611082325">
 
   <!-- ANALİTİKA: Google Analytics / Meta Pixel kodunu bura əlavə edin -->
 </head>
@@ -51,10 +51,13 @@
     <section class="hero">
       <div class="hero-bg" data-imgkey="hero" data-img="assets/img/hero.jpg" role="img" aria-label="Portofino layihəsi"></div>
       <div class="wrap hero-in">
-        <p class="hero-eyebrow" data-i18n="hero.eyebrow">Şirkətlər qrupu</p>
-        <h1>Portofino Development</h1>
+        <p class="hero-eyebrow"><i aria-hidden="true"></i><span data-i18n="hero.eyebrow">Şirkətlər qrupu</span></p>
+        <h1>Portofino <span>Development</span></h1>
         <p class="hero-lead" data-i18n="hero.lead"></p>
-        <a class="btn" href="#companies" data-i18n="hero.btn1">Şirkətlərimiz</a>
+        <div class="hero-actions">
+          <a class="btn" href="#companies" data-i18n="hero.btn1">Şirkətlərimiz</a>
+          <a class="btn-ghost" href="#contact" data-i18n="nav.contact">Əlaqə</a>
+        </div>
       </div>
     </section>
 
@@ -66,8 +69,9 @@
           <h2><span data-i18n="about.t1">Bir qrup.</span> <span data-i18n="about.t2">Ortaq standart.</span></h2>
           <p data-i18n="about.p1"></p>
           <p data-i18n="about.p2"></p>
+          <div class="stats" id="stats"></div>
         </div>
-        <div class="about-img" data-imgkey="about" data-img="assets/img/about.jpg" role="img" aria-label="Portofino layihəsi"></div>
+        <div class="about-media"><div class="about-img" data-imgkey="about" data-img="assets/img/about.jpg" role="img" aria-label="Portofino layihəsi"></div></div>
       </div>
     </section>
 
@@ -85,6 +89,7 @@
     <!-- ƏLAQƏ -->
     <section class="contact" id="contact">
       <div class="wrap">
+        <p class="eyebrow" data-i18n="contact.eyebrow">Əlaqə</p>
         <p class="contact-note" data-i18n="contact.text"></p>
         <a class="contact-phone" id="c-phone" href="#"></a>
         <div class="contact-meta">
@@ -97,6 +102,7 @@
 
   <footer class="site-footer">
     <div class="wrap">
+      <a class="logo logo-light" href="#top" aria-label="Portofino Development"><svg class="logo-hex" viewBox="0 0 100 100" aria-hidden="true"><path d="M27 6h46l23 44-23 44H27L4 50 27 6Z"/></svg><span class="logo-text"><b>PORTOFINO</b><small>DEVELOPMENT</small></span></a>
       <nav class="foot-nav" aria-label="Footer">
         <a href="#about" data-i18n="nav.about">Haqqımızda</a>
         <a href="#companies" data-i18n="nav.companies">Şirkətlər</a>
@@ -107,8 +113,8 @@
     </div>
   </footer>
 
-  <script src="assets/data.js?v=202611082319"></script>
-  <script src="assets/firebase-config.js?v=202611082319"></script>
-  <script src="assets/main.js?v=202611082319"></script>
+  <script src="assets/data.js?v=202611082325"></script>
+  <script src="assets/firebase-config.js?v=202611082325"></script>
+  <script src="assets/main.js?v=202611082325"></script>
 </body>
 </html>

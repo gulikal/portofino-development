@@ -41,7 +41,7 @@
       if (active) card.href = c.url || "#"; // TZ: eyni pəncərədə açılır
       var img = el("div", "card-img");
       if (active) {
-        bg(img, c.image);
+        var z = el("div", "zoom"); bg(z, c.image); img.appendChild(z);
         if (c.logo) { img.classList.add("has-logo"); var lg = el("img"); lg.src = c.logo; lg.alt = c.name[lang]; img.appendChild(lg); }
       } else {
         img.appendChild(el("span", "soon-mark", t["card.soon"]));
@@ -54,6 +54,18 @@
       body.appendChild(el("span", "card-link", active ? t["card.visit"] + " \u2192" : t["card.soon"]));
       card.appendChild(body);
       wrap.appendChild(card);
+    });
+  }
+
+  function renderStats(lang) {
+    var box = document.getElementById("stats");
+    if (!box) return;
+    box.textContent = "";
+    (SITE.stats || []).forEach(function (s) {
+      var d = el("div", "stat");
+      d.appendChild(el("b", null, s.value));
+      d.appendChild(el("small", null, s.label[lang]));
+      box.appendChild(d);
     });
   }
 
@@ -93,8 +105,10 @@
       var k = n.getAttribute("data-imgkey");
       bg(n, (k && imgs[k]) || n.getAttribute("data-img"));
     });
+    renderStats(lang);
     renderCompanies(lang, t);
     renderContact(lang);
+    reveal();
     try { localStorage.setItem("pd-lang", lang); } catch (e) { /* ignore */ }
   }
 
@@ -112,6 +126,22 @@
   nav.addEventListener("click", function (e) {
     if (e.target.closest("a")) { burger.setAttribute("aria-expanded", "false"); nav.classList.remove("is-open"); }
   });
+
+  // Scroll-da yumşaq görünmə: ilk ekrandakı elementlər dərhal görünür
+  var io = "IntersectionObserver" in window ? new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+  }, { threshold: 0.12 }) : null;
+  function reveal() {
+    if (!io) return;
+    document.documentElement.classList.add("js-reveal");
+    document.querySelectorAll(".about-grid > *, .sec-head, .card, .contact .wrap, .stat").forEach(function (n, i) {
+      if (n.classList.contains("rv")) return;
+      if (n.getBoundingClientRect().top < innerHeight * 0.92) return;
+      n.classList.add("rv");
+      if (n.classList.contains("card") || n.classList.contains("stat")) n.style.setProperty("--d", (Array.prototype.indexOf.call(n.parentNode.children, n) * 0.08) + "s");
+      io.observe(n);
+    });
+  }
 
   document.getElementById("year").textContent = String(new Date().getFullYear());
   setLang(storedLang());
