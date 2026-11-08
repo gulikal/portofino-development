@@ -55,6 +55,8 @@
         img.appendChild(cap);
         var go = el("span", "card-go"); go.innerHTML = ARROW; img.appendChild(go);
       } else {
+        img.appendChild(el("div", "soon-bg"));
+        img.appendChild(el("div", "soon-glow"));
         var s = el("div", "soon-mark"); s.innerHTML = HEX;
         s.appendChild(el("b", null, tr["card.soon"]));
         s.appendChild(el("small", null, c.tag[lang]));

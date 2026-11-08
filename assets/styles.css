@@ -224,3 +224,43 @@ a.card:active { transform: scale(0.985); }
 }
 .card-link svg { width: 14px; height: 14px; transition: transform 0.35s var(--ease); }
 a.card:hover .card-link svg { transform: translateX(4px); }
+
+/* =========================================================
+   Hero mətnlərinin oxunaqlılığı
+   ========================================================= */
+.hero-bg::after {
+  background:
+    radial-gradient(ellipse 62% 52% at 50% 52%, rgba(4, 30, 26, 0.72) 0%, rgba(4, 30, 26, 0.35) 60%, transparent 85%),
+    linear-gradient(180deg, rgba(6, 44, 39, 0.6) 0%, rgba(6, 44, 39, 0.35) 40%, rgba(6, 44, 39, 0.9) 100%);
+}
+.ht-1 { text-shadow: 0 2px 6px rgba(0, 0, 0, 0.35), 0 8px 40px rgba(0, 0, 0, 0.45); }
+.ht-2, .hero-eyebrow { color: #F3D49B; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6), 0 0 18px rgba(0, 0, 0, 0.5); font-weight: 600; }
+.hero-eyebrow i { background: #F3D49B; box-shadow: 0 0 6px rgba(0, 0, 0, 0.4); }
+.hero-lead { color: #fff; font-weight: 400; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7), 0 2px 18px rgba(0, 0, 0, 0.5); margin-top: 6px; }
+
+/* =========================================================
+   "Tezliklə" kartı: yumşaq animasiyalar
+   ========================================================= */
+.card.is-soon .card-img { isolation: isolate; }
+.card.is-soon .card-img::before {
+  /* çərçivə boyunca fırlanan qızılı işıq */
+  content: ""; position: absolute; inset: -60%; z-index: 0;
+  background: conic-gradient(from 0deg, transparent 0 70%, rgba(226, 183, 118, 0.9) 78%, transparent 86% 100%);
+  animation: soon-spin 7s linear infinite;
+}
+.card.is-soon .card-img .soon-bg { position: absolute; inset: 2px; z-index: 1; background: radial-gradient(ellipse 80% 70% at 50% 45%, #145A50, var(--green-dark)); }
+.card.is-soon .card-img .soon-glow { position: absolute; z-index: 1; left: 50%; top: 45%; width: 70%; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; background: radial-gradient(circle, rgba(226, 183, 118, 0.3), transparent 65%); animation: soon-breathe 4.5s ease-in-out infinite; }
+.soon-mark { z-index: 2; }
+.soon-mark svg path { stroke-dasharray: 280; stroke-dashoffset: 280; animation: soon-draw 3.4s ease-in-out infinite alternate; }
+.soon-mark b {
+  background: linear-gradient(100deg, #C99B55 0%, #F6DDA8 42%, #FFF4DC 50%, #F6DDA8 58%, #C99B55 100%);
+  background-size: 250% 100%; -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: soon-shine 5s ease-in-out infinite;
+}
+.card.is-soon .card-link { display: inline-flex; align-items: center; gap: 10px; }
+.card.is-soon .card-link::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--gold); animation: soon-pulse 1.8s ease-in-out infinite; }
+@keyframes soon-spin { to { transform: rotate(360deg); } }
+@keyframes soon-breathe { 0%, 100% { opacity: 0.55; transform: translate(-50%, -50%) scale(0.92); } 50% { opacity: 1; transform: translate(-50%, -50%) scale(1.06); } }
+@keyframes soon-draw { to { stroke-dashoffset: 0; } }
+@keyframes soon-shine { 0% { background-position: 100% 0; } 60%, 100% { background-position: 0% 0; } }
+@keyframes soon-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(226, 183, 118, 0.6); } 50% { box-shadow: 0 0 0 6px rgba(226, 183, 118, 0); } }
