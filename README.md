@@ -67,7 +67,7 @@ server {
 Ünvan: `saytın-ünvanı/admin/` (məsələn, `https://portofino-development.netlify.app/admin/`)
 
 Məzmun Google Firebase-də saxlanılır (layihə: `portofino-development`, pulsuz Spark planı, kart tələb etmir).
-Panel vasitəsilə: şirkətlər (əlavə et, redaktə et, sırala, gizlət, "Tezliklə"), bütün mətnlər (AZ/RU/EN),
+Panel vasitəsilə: şirkətlər (əlavə et, redaktə et, sırala, gizlət, "Tezliklə"), mətnlər (AZ/RU/EN),
 bölmə şəkilləri, rəqəmlər və əlaqə məlumatları dəyişdirilir. "Yadda saxla" basılan kimi saytda görünür.
 
 ### Admin istifadəçisi əlavə etmək
