@@ -11,7 +11,9 @@
   var base = cfg && cfg.projectId ? "https://firestore.googleapis.com/v1/projects/" + encodeURIComponent(cfg.projectId) + "/databases/(default)/documents" : "";
   var keyQ = cfg && cfg.apiKey ? "?key=" + encodeURIComponent(cfg.apiKey) : "";
   var ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
-  var HEX = '<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M27 6h46l23 44-23 44H27L4 50 27 6Z"/></svg>';
+  var NAME_SVG = '<svg class="soon-name" viewBox="0 0 320 70" aria-label="Portofino Development" role="img">' +
+    '<text class="sn-1" x="160" y="34" text-anchor="middle">PORTOFINO</text>' +
+    '<text class="sn-2" x="160" y="60" text-anchor="middle">DEVELOPMENT</text></svg>';
   var ICONS = {
     instagram: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm0 8.2a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4ZM17.3 5.5a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4ZM12 2c-2.7 0-3.1 0-4.1.1C4.4 2.2 2.2 4.4 2.1 7.9 2 8.9 2 9.3 2 12s0 3.1.1 4.1c.1 3.5 2.3 5.7 5.8 5.8 1 .1 1.4.1 4.1.1s3.1 0 4.1-.1c3.5-.1 5.7-2.3 5.8-5.8.1-1 .1-1.4.1-4.1s0-3.1-.1-4.1c-.1-3.5-2.3-5.7-5.8-5.8C15.1 2 14.7 2 12 2Zm0 1.8c2.7 0 3 0 4 .1 2.5.1 3.9 1.5 4 4 .1 1 .1 1.3.1 4s0 3-.1 4c-.1 2.5-1.5 3.9-4 4-1 .1-1.3.1-4 .1s-3 0-4-.1c-2.5-.1-3.9-1.5-4-4-.1-1-.1-1.3-.1-4s0-3 .1-4c.1-2.5 1.5-3.9 4-4 1-.1 1.3-.1 4-.1Z"/></svg>',
     facebook: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-7.5H16l.4-3h-2.9V8.6c0-.9.3-1.5 1.5-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.8 1.4-3.8 3.9v2.3H8v3h2.5V21h3Z"/></svg>',
@@ -57,7 +59,7 @@
       } else {
         img.appendChild(el("div", "soon-bg"));
         img.appendChild(el("div", "soon-glow"));
-        var s = el("div", "soon-mark"); s.innerHTML = HEX;
+        var s = el("div", "soon-mark"); s.innerHTML = NAME_SVG;
         s.appendChild(el("b", null, tr["card.soon"]));
         s.appendChild(el("small", null, c.tag[lang]));
         img.appendChild(s);

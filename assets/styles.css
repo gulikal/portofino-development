@@ -149,7 +149,7 @@ a.card:active { transform: scale(0.985); }
 .soon-mark { position: absolute; z-index: 2; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; color: #fff; }
 .soon-mark svg { width: 54px; height: 54px; }
 .soon-mark svg path { fill: none; stroke: var(--gold); stroke-width: 1.6; }
-.soon-mark b { font: 400 clamp(26px, 2.4vw, 32px) var(--display); letter-spacing: 0.08em; color: var(--gold); }
+.soon-mark b { font: 400 clamp(18px, 1.7vw, 22px) var(--display); letter-spacing: 0.08em; color: var(--gold); }
 .soon-mark small { font-size: 11px; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255, 255, 255, 0.7); }
 .card.is-soon .card-link { color: var(--muted); }
 
@@ -251,7 +251,16 @@ a.card:hover .card-link svg { transform: translateX(4px); }
 .card.is-soon .card-img .soon-bg { position: absolute; inset: 2px; z-index: 1; background: radial-gradient(ellipse 80% 70% at 50% 45%, #145A50, var(--green-dark)); }
 .card.is-soon .card-img .soon-glow { position: absolute; z-index: 1; left: 50%; top: 45%; width: 70%; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; background: radial-gradient(circle, rgba(226, 183, 118, 0.3), transparent 65%); animation: soon-breathe 4.5s ease-in-out infinite; }
 .soon-mark { z-index: 2; }
-.soon-mark svg path { stroke-dasharray: 280; stroke-dashoffset: 280; animation: soon-draw 3.4s ease-in-out infinite alternate; }
+.soon-mark .soon-name { width: min(78%, 300px); height: auto; overflow: visible; }
+.soon-name text { fill: var(--gold); fill-opacity: 0; stroke: var(--gold); stroke-width: 0.7; stroke-dasharray: 420; stroke-dashoffset: 420; animation: name-draw 5s ease-in-out infinite; }
+.soon-name .sn-1 { font: 400 34px var(--display); letter-spacing: 0.14em; }
+.soon-name .sn-2 { font: 600 11.5px var(--body); letter-spacing: 0.62em; stroke-width: 0.4; animation-delay: 0.35s; }
+@keyframes name-draw {
+  0% { stroke-dashoffset: 420; fill-opacity: 0; }
+  45% { stroke-dashoffset: 0; fill-opacity: 0; }
+  65%, 85% { stroke-dashoffset: 0; fill-opacity: 1; }
+  100% { stroke-dashoffset: 420; fill-opacity: 0; }
+}
 .soon-mark b {
   background: linear-gradient(100deg, #C99B55 0%, #F6DDA8 42%, #FFF4DC 50%, #F6DDA8 58%, #C99B55 100%);
   background-size: 250% 100%; -webkit-background-clip: text; background-clip: text; color: transparent;
