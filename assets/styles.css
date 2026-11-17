@@ -60,8 +60,6 @@ h2 em { font-style: normal; color: var(--gold-ink); }
 .site-header .wrap { display: flex; align-items: center; gap: 36px; min-height: 84px; transition: min-height 0.35s ease; }
 .site-header.is-solid .wrap { min-height: 70px; }
 .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; }
-.logo-hex { width: 30px; height: 30px; flex: none; }
-.logo-hex path { fill: none; stroke: var(--gold); stroke-width: 5; }
 .logo-text { display: flex; flex-direction: column; line-height: 1; gap: 6px; }
 .logo-text b { font: 400 19px var(--display); letter-spacing: 0.16em; }
 .logo-text small { font: 600 8.5px var(--body); letter-spacing: 0.46em; color: var(--gold); }
